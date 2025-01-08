@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: "ecommerce-order-payment-system"
+  datasource:
+    url: jdbc:mysql://localhost:3306/fastcampus?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  # JPA ??
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # DB ??? ?? (none, create, create-drop, update, validate)
+    properties:
+      hibernate:
+        auto_quote_keyword: false
+        globally_quoted_identifiers: false
+        format_sql: true     # ?? ?? ?? (??)
+        show_sql: true       # ?? ?? ??

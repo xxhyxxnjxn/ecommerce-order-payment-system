@@ -1,4 +1,4 @@
-package imgsystem.ecommerceorderpaymentsystem.fpay.domain;
+package imgsystem.ecommerceorderpaymentsystem.fpay.domain.order;
 
 import jakarta.persistence.*;
 import lombok.*;

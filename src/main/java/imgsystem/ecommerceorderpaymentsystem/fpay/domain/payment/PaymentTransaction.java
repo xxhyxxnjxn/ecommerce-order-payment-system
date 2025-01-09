@@ -1,11 +1,10 @@
-package imgsystem.ecommerceorderpaymentsystem.fpay.domain;
+package imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 
 @Entity

@@ -1,7 +1,7 @@
 package imgsystem.ecommerceorderpaymentsystem.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import imgsystem.ecommerceorderpaymentsystem.fpay.domain.PurchaseOrder;
+import imgsystem.ecommerceorderpaymentsystem.fpay.domain.order.PurchaseOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -29,7 +29,7 @@
 #### 1. Presentation
         사용자의 요청을 처리하고 사용자에게 정보를 보여주는 역할을 한다.
         controller역할을 한다고 생각할 수도 있지만 presentation은 controller처럼 http에만 종속된는 것이 아니라
-        외부 시스템일 수도 있다. 여기서 외부 시스템은 Front Server가 될수도 있고 OpenApi 형태로 Request를 요청하는
+        외부 시스템일 수도 있다. 여기서 외부 시스템은 Front Server가 될수도 있고 OpenApi 형태로 다른 특정한 백엔드 시스템이 우리한테 Request를 요청하는
         시스템이 될 수도 있다.
 #### 2. Application
         사용자가 요청한 기능을 실행한다. 업무 로직을 직접 구현하지 않으며 도메인 계층을 조합해서 기능을 실행한다.

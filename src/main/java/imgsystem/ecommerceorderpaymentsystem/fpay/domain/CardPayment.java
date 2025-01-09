@@ -1,4 +1,4 @@
-package imgsystem.ecommerceorderpaymentsystem.order.domain;
+package imgsystem.ecommerceorderpaymentsystem.fpay.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

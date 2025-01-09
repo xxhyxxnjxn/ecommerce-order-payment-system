@@ -1,6 +1,6 @@
-package imgsystem.ecommerceorderpaymentsystem.order.controller;
+package imgsystem.ecommerceorderpaymentsystem.fpay.presentation;
 
-import imgsystem.ecommerceorderpaymentsystem.order.domain.PurchaseOrder;
+import imgsystem.ecommerceorderpaymentsystem.fpay.domain.PurchaseOrder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

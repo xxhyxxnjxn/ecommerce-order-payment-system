@@ -44,7 +44,8 @@ public class OrderItem {
     private int amount;
 
     @Column(name = "order_state", nullable = false)
-    private String orderState;
+    @Convert(converter = OrderStatusConverter.class)
+    private OrderStatus orderState;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt = LocalDateTime.now();

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -25,7 +26,8 @@ public class PurchaseOrder {
     private String phoneNumber;
 
     @Column(name = "order_state",nullable = false)
-    private String orderState;
+    @Convert(converter = OrderStatusConverter.class)
+    private OrderStatus orderState;
 
     @Column(name="payment_id")
     private String paymentId;
@@ -38,4 +40,7 @@ public class PurchaseOrder {
 
     @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
 }

@@ -33,7 +33,8 @@ public class PaymentTransaction {
     private int canceledAmount;
 
     @Column(name = "payment_status", nullable = false)
-    private String paymentStatus;
+    @Convert(converter = PaymentStatus.class)
+    private PaymentStatus paymentStatus;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt = LocalDateTime.now();

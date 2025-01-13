@@ -12,6 +12,6 @@ public class PaymentStatusConverter implements AttributeConverter<PaymentStatus,
 
     @Override
     public PaymentStatus convertToEntityAttribute(String s) {
-        return null;
+        return PaymentStatus.valueOf(s);
     }
 }

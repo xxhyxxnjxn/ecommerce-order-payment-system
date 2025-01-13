@@ -16,6 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderInfos {
 
+    /**
+     * Not null : null 만 비허용
+     * Not Empty : null, "" 비허용
+     * Not Blank : null, "", " " 모두 비허용
+     */
+
     @NotNull(message = "Not null")
     @Valid
     private Orderer orderer;

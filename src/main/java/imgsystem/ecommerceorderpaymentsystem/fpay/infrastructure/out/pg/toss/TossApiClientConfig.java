@@ -1,9 +1,13 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.springframework.context.annotation.Bean;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -31,4 +35,19 @@ public class TossApiClientConfig {
                 })
                 .build();
     }
+
+    @Bean
+    public Retrofit retrofit(OkHttpClient okHttpClient) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule()); // request message에 시간 관련 타입을 설정해주려고
+        return new Retrofit.Builder().baseUrl(BASE_URL)
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+                .client(okHttpClient)
+                .build();
+    }
+
+//    @Bean
+//    public TossPaymentAPIs createApiClient(Retrofit retrofit){
+//        return retrofit.create(TossPaymentAPIs.class);
+//    }
 }

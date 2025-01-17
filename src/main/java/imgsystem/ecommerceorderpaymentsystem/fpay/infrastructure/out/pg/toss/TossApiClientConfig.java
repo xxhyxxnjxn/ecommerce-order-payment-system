@@ -46,8 +46,8 @@ public class TossApiClientConfig {
                 .build();
     }
 
-//    @Bean
-//    public TossPaymentAPIs createApiClient(Retrofit retrofit){
-//        return retrofit.create(TossPaymentAPIs.class);
-//    }
+    @Bean
+    public TossPaymentAPIs createApiClient(Retrofit retrofit){
+        return retrofit.create(TossPaymentAPIs.class);
+    }
 }

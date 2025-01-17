@@ -48,4 +48,21 @@
 ** DDD 는 중복을 감수하고 가는 것이다 ??
 
 ### 토스 결제 API 정리
-https://docs.google.com/spreadsheets/d/1ts5o2Wm6C4avU44-AHIwWIV1PhUVz4-10soBuVSq3ms/edit?usp=sharing
+#### 1. POST - /v1/payments/confirm
+   paymentKey에 해당하는 결제를 검증하고 승인합니다.
+1) Request Body
+
+   (1) paymentType 필수 · String
+
+    결제의 키값입니다. 최대 길이는 200자입니다.
+
+   (2) orderId 필수 · string
+
+   주문번호입니다. 주문한 결제를 식별합니다.
+
+   (3) amount 필수 · number
+
+   결제할 금액입니다.
+2) Response
+
+   Payment 객체에 들어온다.

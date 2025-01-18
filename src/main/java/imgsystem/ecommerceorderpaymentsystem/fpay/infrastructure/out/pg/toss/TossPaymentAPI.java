@@ -9,6 +9,9 @@ import retrofit2.Response;
 
 import java.io.IOException;
 
+/**
+ * call 을 날리는 메서드들
+ */
 @Component
 @RequiredArgsConstructor
 public class TossPaymentAPI implements PaymentAPIs {

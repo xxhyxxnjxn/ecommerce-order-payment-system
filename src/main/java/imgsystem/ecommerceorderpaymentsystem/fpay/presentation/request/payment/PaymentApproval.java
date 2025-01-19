@@ -1,4 +1,4 @@
-package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request;
+package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.payment;
 
 import lombok.Getter;
 

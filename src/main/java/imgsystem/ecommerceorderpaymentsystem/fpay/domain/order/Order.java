@@ -12,7 +12,7 @@ import java.util.UUID;
 @Table(name="purchase_order")
 @Getter
 @Setter
-public class PurchaseOrder {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -41,6 +41,6 @@ public class PurchaseOrder {
     @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 }

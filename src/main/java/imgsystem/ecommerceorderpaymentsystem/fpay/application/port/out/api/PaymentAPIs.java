@@ -1,7 +1,7 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.api;
 
 import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.ResponsePaymentApproval;
-import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.PaymentApproval;
+import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.payment.PaymentApproval;
 
 import java.io.IOException;
 

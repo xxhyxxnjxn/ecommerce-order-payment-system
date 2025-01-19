@@ -1,7 +1,7 @@
 package imgsystem.ecommerceorderpaymentsystem.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import imgsystem.ecommerceorderpaymentsystem.fpay.domain.order.PurchaseOrder;
+import imgsystem.ecommerceorderpaymentsystem.fpay.domain.order.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +32,9 @@ public class OrderController {
     @Test
     public void newOrder_2XX_CorrectConstraintValue() throws Exception {
         //controller가 있어야만 test 동작 가능
-        PurchaseOrder purchaseOrder = new PurchaseOrder("정현진", "010-5699-9064");
+        Order order = new Order("정현진", "010-5699-9064");
 
-        String requestJson = objectMapper.writeValueAsString(purchaseOrder);
+        String requestJson = objectMapper.writeValueAsString(order);
         this.mockMvc.perform(RestDocumentationRequestBuilders.post("/order/new")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)

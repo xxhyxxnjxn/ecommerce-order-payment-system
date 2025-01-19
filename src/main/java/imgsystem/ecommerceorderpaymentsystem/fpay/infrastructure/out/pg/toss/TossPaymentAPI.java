@@ -2,7 +2,7 @@ package imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss;
 
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.api.PaymentAPIs;
 import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.ResponsePaymentApproval;
-import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.PaymentApproval;
+import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.payment.PaymentApproval;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import retrofit2.Response;

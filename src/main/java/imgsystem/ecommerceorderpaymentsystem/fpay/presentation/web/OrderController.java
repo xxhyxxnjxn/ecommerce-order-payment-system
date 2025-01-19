@@ -1,7 +1,7 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.web;
 
-import imgsystem.ecommerceorderpaymentsystem.fpay.domain.order.PurchaseOrder;
-import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.response.OrderInfos;
+import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order.PurchaseOrder;
+import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.response.NewPurchaseOrder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     @PostMapping("/new")
-    public OrderInfos newOrder(@RequestBody @Valid OrderInfos orderInfos){
-        return orderInfos;
+    public NewPurchaseOrder newOrder(@RequestBody @Valid PurchaseOrder purchaseOrder){
+//        return order;
+        return new NewPurchaseOrder();
     }
 
     @GetMapping

@@ -1,4 +1,4 @@
-package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.response;
+package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderInfo {
+public class PurchaseOrderItem {
 
     private int itemIdx;
 
@@ -22,9 +22,6 @@ public class OrderInfo {
     private String productName;
 
     private int producePrice;
-
-    @NotBlank
-    private String produceSize;
 
     private int quantity;
 

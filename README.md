@@ -1,10 +1,11 @@
-## ecommerce-order-payment-system
+## ecommerce-purchaseOrder-payment-system
 
 ### 요구사항 분석
 
 #### 1. 상품 주문
 - 상품 주문은 최소 1개 이상 주문해야 한다.
 - 한번의 주문에 다수의 상품을 n개 구매할 수 있다.
+- 한번의 주문에 동일의 상품을 n개 구매할 수 있다.
 - 결제 수단을 카드 결제만 가능하며, 추후 결제 수단은 추가될 수 없다.
 
 #### 2. 상품 결제
@@ -49,3 +50,21 @@
 
 ### 토스 결제 API 정리
 https://docs.google.com/spreadsheets/d/1ts5o2Wm6C4avU44-AHIwWIV1PhUVz4-10soBuVSq3ms/edit?usp=sharing
+
+### DIP
+ 고수준과 저수준 모듈 (DIP)
+ 우리 프로젝트에서는 구현체(저수준 모듈)에 직접 의존하지 않는다.
+ 추상체 or 인터페이스에 의존하여 기능을 완성시킨다.
+ 
+### TDD
+
+#### 메소드명 컨벤션
+ [테스트 진행할 메소드 명] _ [결과값] _ [테스트 케이스에 대한 시나리오]
+ 이런 식으로 작성하면 된다.
+ ex ) 하나의 주문에 동일한 상품을 n개 구매할 수 없다.
+ verifyDuplicatedOrderItemId_True_NotDuplicateProductId()
+ 
+#### JPA TEST
+ @DataJpaTest : JPA 관련 전용 테스트로 테스트 진행 시 관련 Bean만 띄운다.
+ @AutoConfigureTestDataBase : 개발 DB , 운영 DB 를 사용하지 않고 TEST용 DB(H2)를 사용해서
+  테스트를 진행할 수 있게 설정 해주는 어노테이션

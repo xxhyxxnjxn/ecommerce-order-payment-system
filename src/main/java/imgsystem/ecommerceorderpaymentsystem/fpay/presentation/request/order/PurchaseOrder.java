@@ -1,4 +1,4 @@
-package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.response;
+package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderInfos {
+public class PurchaseOrder {
 
     /**
      * Not null : null 만 비허용
@@ -28,6 +28,6 @@ public class OrderInfos {
 
     @Size(min = 1)
     @Valid
-    private List<OrderInfo> orderInfos;
+    private List<PurchaseOrderItem> purchaseOrderItems;
 
 }

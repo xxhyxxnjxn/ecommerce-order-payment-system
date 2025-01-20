@@ -22,16 +22,16 @@ public class OrderTest {
      * [Test Case #2] N개 일 때, return true;
      * [Exception] 0개 일 떄, 오류 처리
      */
-
     @Test
     public void verifyHaveAtLeastOneItem_False_ListSizeBiggerThanOne(){
         PurchaseOrder newPurchaseOrder = new PurchaseOrder(
                 new Orderer("정현진", "010-5699-9064"),
                 List.of(
-                        new PurchaseOrderItem(1, UUID.randomUUID(), "농심 짜파게티 4봉", 4500, 1,  4500)
+                        new PurchaseOrderItem(1, UUID.randomUUID(), "농심 짜파게티 4봉", 4500, "FREE", 1,  4500)
                 )
         );
 
         Order order = newPurchaseOrder.toEntity(); // 이거에 대한 메서드 작성 요망
+
     }
 }

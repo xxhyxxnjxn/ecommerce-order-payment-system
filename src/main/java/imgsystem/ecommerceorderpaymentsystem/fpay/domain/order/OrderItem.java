@@ -1,8 +1,7 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.domain.order;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -12,6 +11,9 @@ import java.util.UUID;
 @Table(name="order_item")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderItem {
 
     @Id
@@ -52,4 +54,10 @@ public class OrderItem {
 
     @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    public int calculateAmount() {
+        int totalPrice = producePrice * quantity;
+        this.amount = totalPrice;
+        return totalPrice;
+    }
 }

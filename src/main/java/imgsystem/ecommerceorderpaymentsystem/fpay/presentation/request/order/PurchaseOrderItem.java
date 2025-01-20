@@ -23,7 +23,9 @@ public class PurchaseOrderItem {
 
     private int producePrice;
 
+    private String productSize;
+
     private int quantity;
 
-    private int amount;
+    private int amount; // price * quantity
 }

@@ -1,6 +1,7 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.domain.order;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,9 @@ import java.util.UUID;
 @Table(name="purchase_order")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order {
 
     @Id
@@ -43,4 +47,8 @@ public class Order {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
+
+    public void calculateTotalPrice(){
+        this.totalPrice = orderItems.stream().map(OrderItem::calculateAmount).reduce(0, Integer::sum);
+    }
 }

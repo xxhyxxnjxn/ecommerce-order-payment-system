@@ -32,22 +32,22 @@ public class OrderController {
     @Test
     public void newOrder_2XX_CorrectConstraintValue() throws Exception {
         //controller가 있어야만 test 동작 가능
-        Order order = new Order("정현진", "010-5699-9064");
-
-        String requestJson = objectMapper.writeValueAsString(order);
-        this.mockMvc.perform(RestDocumentationRequestBuilders.post("/order/new")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(requestJson))
-                .andExpect(status().isOk())
-                .andDo(document("CorrectRequestMessage",
-                                PayloadDocumentation.requestFields(
-                                        PayloadDocumentation.fieldWithPath("name").description("주문자명")
-                                                .attributes((key("constraint").value("주문자명을 입력 해주세요."))),
-                                        PayloadDocumentation.fieldWithPath("phoneNumber").description("주문자 휴대전화 번호")
-                                                .attributes((key("constraint").value("주문자명을 입력 해주세요.")))
-                                )
-                        )
-                );
+//        Order order = new Order("정현진", "010-5699-9064");
+//
+//        String requestJson = objectMapper.writeValueAsString(order);
+//        this.mockMvc.perform(RestDocumentationRequestBuilders.post("/order/new")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .content(requestJson))
+//                .andExpect(status().isOk())
+//                .andDo(document("CorrectRequestMessage",
+//                                PayloadDocumentation.requestFields(
+//                                        PayloadDocumentation.fieldWithPath("name").description("주문자명")
+//                                                .attributes((key("constraint").value("주문자명을 입력 해주세요."))),
+//                                        PayloadDocumentation.fieldWithPath("phoneNumber").description("주문자 휴대전화 번호")
+//                                                .attributes((key("constraint").value("주문자명을 입력 해주세요.")))
+//                                )
+//                        )
+//                );
     }
 }

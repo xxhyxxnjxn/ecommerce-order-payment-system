@@ -4,6 +4,7 @@ import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order.Pur
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order.PurchaseOrderItem;
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order.Orderer;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class OrderTest {
      * [Exception] 0개 일 떄, 오류 처리
      */
     @Test
-    public void verifyHaveAtLeastOneItem_False_ListSizeBiggerThanOne(){
+    public void verifyHaveAtLeastOneItem_False_ListSizeBiggerThanOne() throws Exception {
         PurchaseOrder newPurchaseOrder = new PurchaseOrder(
                 new Orderer("정현진", "010-5699-9064"),
                 List.of(
@@ -33,5 +34,6 @@ public class OrderTest {
 
         Order order = newPurchaseOrder.toEntity(); // 이거에 대한 메서드 작성 요망
 
+        Assertions.assertEquals(order.verifyHaveAtLeastOneItem(order.getOrderItems()), true);
     }
 }

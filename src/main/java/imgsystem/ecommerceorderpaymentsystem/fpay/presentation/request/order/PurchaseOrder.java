@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.aspectj.weaver.ast.Or;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -34,28 +35,34 @@ public class PurchaseOrder {
     @Valid
     private List<PurchaseOrderItem> purchaseOrderItems;
 
-    public Order toEntity() {
-        Order order = new Order();
-        order.setName(orderer.getName());
-        order.setPhoneNumber(orderer.getPhoneNumber());
-        order.setOrderState(OrderStatus.ORDER_COMPLETED);
+    public List<OrderItem> convert2OrderItems(Order o) {
+        return purchaseOrderItems.stream()
+                .map(items -> convert2OrderItem(items, o))
+                .toList();
+    }
 
-        List<OrderItem> orderItems = purchaseOrderItems.stream()
-                .map(purchaseOrderItem -> OrderItem.builder()
-                        .order(order)
-                        .itemIdx(purchaseOrderItem.getItemIdx())
-                        .productId(purchaseOrderItem.getProductId())
-                        .productName(purchaseOrderItem.getProductName())
-                        .producePrice(purchaseOrderItem.getProducePrice())
-                        .produceSize(purchaseOrderItem.getProductSize())
-                        .quantity(purchaseOrderItem.getQuantity())
-                        .amount(purchaseOrderItem.getAmount())
-                        .orderState(OrderStatus.ORDER_COMPLETED).build()
-                ).toList();
+    private OrderItem convert2OrderItem(PurchaseOrderItem item, Order o) {
+        return OrderItem.builder()
+                .order(o)
+                .itemIdx(item.getItemIdx())
+                .productId(item.getProductId())
+                .productName(item.getProductName())
+                .producePrice(item.getProducePrice())
+                .quantity(item.getQuantity())
+                .produceSize("FREE")
+                .orderState(OrderStatus.ORDER_COMPLETED)
+                .build();
+    }
 
-        order.setOrderItems(orderItems);
-        order.calculateTotalPrice();
-
-        return order;
+    public Order toEntity() throws Exception {
+        Order o = Order.builder()
+                .items(new ArrayList<>())
+                .name(this.getOrderer().getName())
+                .phoneNumber(this.getOrderer().getPhoneNumber())
+                .build();
+        o.getOrderItems().addAll(this.convert2OrderItems(o));
+        if (Order.verifyHaveAtLeastOneItem(o.getOrderItems())) throw new Exception("Noting Items");
+        o.calculateTotalPrice();
+        return o;
     }
 }

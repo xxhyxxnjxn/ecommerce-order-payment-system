@@ -13,7 +13,6 @@ import java.util.UUID;
 @Table(name="purchase_order")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order {
@@ -40,15 +39,27 @@ public class Order {
     private int totalPrice;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
+    @Builder
+    public Order(String name, String phoneNumber, List<OrderItem> items) throws Exception {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.orderState = OrderStatus.ORDER_COMPLETED;
+        this.orderItems = items;
+    }
+
     public void calculateTotalPrice(){
         this.totalPrice = orderItems.stream().map(OrderItem::calculateAmount).reduce(0, Integer::sum);
+    }
+
+    public static boolean verifyHaveAtLeastOneItem(List<OrderItem> items) {
+        return items.isEmpty() || items == null;
     }
 }

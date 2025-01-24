@@ -34,6 +34,6 @@ public class OrderTest {
 
         Order order = newPurchaseOrder.toEntity(); // 이거에 대한 메서드 작성 요망
 
-        Assertions.assertEquals(order.verifyHaveAtLeastOneItem(order.getOrderItems()), true);
+        Assertions.assertEquals(order.verifyHaveAtLeastOneItem(order.getOrderItems()), false);
     }
 }

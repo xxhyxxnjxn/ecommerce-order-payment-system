@@ -16,6 +16,7 @@ public class PurchaseOrderItem {
 
     private int itemIdx;
 
+    @NotBlank
     private UUID productId;
 
     @NotBlank

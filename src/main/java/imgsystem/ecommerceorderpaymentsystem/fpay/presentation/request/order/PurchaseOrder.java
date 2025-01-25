@@ -61,7 +61,7 @@ public class PurchaseOrder {
                 .phoneNumber(this.getOrderer().getPhoneNumber())
                 .build();
         o.getOrderItems().addAll(this.convert2OrderItems(o));
-        if (Order.verifyHaveAtLeastOneItem(o.getOrderItems())) throw new Exception("Noting Items");
+        if (!Order.hasAtLeastOneItem(o.getOrderItems())) throw new Exception("Noting Items");
         o.calculateTotalPrice();
         return o;
     }

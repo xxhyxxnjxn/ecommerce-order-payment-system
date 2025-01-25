@@ -1,4 +1,4 @@
-package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.web;
+package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.in.web;
 
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order.PurchaseOrder;
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.response.NewPurchaseOrder;

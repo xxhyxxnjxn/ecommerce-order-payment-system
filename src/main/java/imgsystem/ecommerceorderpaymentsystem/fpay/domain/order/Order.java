@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -59,7 +60,16 @@ public class Order {
         this.totalPrice = orderItems.stream().map(OrderItem::calculateAmount).reduce(0, Integer::sum);
     }
 
-    public static boolean verifyHaveAtLeastOneItem(List<OrderItem> items) {
-        return items.isEmpty() || items == null;
+    public static boolean hasAtLeastOneItem(List<OrderItem> items) {
+        if(!items.isEmpty() || items != null) return true;
+
+        throw new IllegalStateException();
+    }
+
+    public boolean hasDuplicatedProductId() {
+        long distinctProductIdCount = this.getOrderItems().stream().map(OrderItem::getProductId).distinct().count();
+        if(distinctProductIdCount == this.getOrderItems().size()) return true;
+
+        throw new IllegalStateException();
     }
 }

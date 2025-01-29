@@ -8,7 +8,7 @@ import java.util.UUID;
 
 
 @Entity
-@Table(name="order_item")
+@Table(name="order_items")
 @Getter
 @Setter
 @Builder
@@ -48,12 +48,6 @@ public class OrderItem {
     @Column(name = "order_state", nullable = false)
     @Convert(converter = OrderStatusConverter.class)
     private OrderStatus orderState;
-
-    @Column(name = "created_at", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private LocalDateTime updatedAt;
 
     public int calculateAmount() {
         int totalPrice = producePrice * quantity;

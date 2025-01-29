@@ -1,5 +1,6 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,9 +15,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PurchaseOrderItem {
 
+    @Min(1)
     private int itemIdx;
 
-    @NotBlank
     private UUID productId;
 
     @NotBlank
@@ -26,6 +27,7 @@ public class PurchaseOrderItem {
 
     private String productSize;
 
+    @Min(1)
     private int quantity;
 
     private int amount; // price * quantity

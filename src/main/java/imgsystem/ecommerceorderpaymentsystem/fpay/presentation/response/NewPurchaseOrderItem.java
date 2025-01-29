@@ -1,24 +1,42 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.response;
 
+import imgsystem.ecommerceorderpaymentsystem.fpay.domain.order.OrderItem;
 import imgsystem.ecommerceorderpaymentsystem.fpay.domain.order.OrderStatus;
-import lombok.Getter;
+import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
-@Getter
+@Data
+@Builder
+@RequiredArgsConstructor
 public class NewPurchaseOrderItem {
 
-    private UUID productId;
+    private final UUID productId;
 
-    private String productName;
+    private final String productName;
 
-    private int producePrice;
+    private final int productPrice;
 
-    private String produceSize;
+    private final String productSize;
 
-    private int quantity;
+    private final int quantity;
 
-    private int amount;
+    private final int amount;
 
-    private OrderStatus orderState;
+    private final OrderStatus orderState;
+
+    public static List<NewPurchaseOrderItem> from(List<OrderItem> orderItems) {
+        return orderItems.stream()
+                .map(orderItem -> NewPurchaseOrderItem.builder()
+                        .productId(orderItem.getProductId())
+                        .productName(orderItem.getProductName())
+                        .productPrice(orderItem.getProducePrice())
+                        .productSize(orderItem.getProduceSize())
+                        .quantity(orderItem.getQuantity())
+                        .amount(orderItem.getAmount())
+                        .orderState(orderItem.getOrderState())
+                        .build())
+                .toList();
+    }
 }

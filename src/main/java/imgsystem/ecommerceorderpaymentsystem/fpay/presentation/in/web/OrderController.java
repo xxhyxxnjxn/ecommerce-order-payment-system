@@ -1,5 +1,6 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.in.web;
 
+import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.CreateNewOrderUseCase;
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order.PurchaseOrder;
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.response.NewPurchaseOrder;
 import jakarta.validation.Valid;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class OrderController {
 
+    private final CreateNewOrderUseCase createNewOrderUseCase;
+
     @PostMapping("/new")
     public NewPurchaseOrder newOrder(@RequestBody @Valid PurchaseOrder purchaseOrder){
-//        return order;
-        return new NewPurchaseOrder();
+
+        return createNewOrderUseCase.makeNewOrder(purchaseOrder);
     }
 
     @GetMapping

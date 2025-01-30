@@ -4,14 +4,23 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
+/**
+ * 금융권에서는 거래 원장이라는 말을 많이 함
+ * 거래 원장은 어떤 사람이 이마트에서 우유를 샀을 때
+ * 그거에 대한 거래내역을 이마트에서 적어놓으면 이 원장들을 모아서 이마트는
+ * 카드사에서 정산을 받음
+ *
+ * 여기에 들어온 값들은 변하지 않음
+ * 결제를 했다가 취소를 해서 재결제를 해도 그 히스토리가 남지
+ * 값을 변경시키지 않음
+ *
+ */
 
 @Entity
 @Table(name="payment_transaction")
 @Getter
 @Setter
-public class PaymentTransaction {
+public class PaymentLedger {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +44,4 @@ public class PaymentTransaction {
     @Column(name = "payment_status", nullable = false)
     @Convert(converter = PaymentStatusConverter.class)
     private PaymentStatus paymentStatus;
-
-    @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private LocalDateTime updatedAt = LocalDateTime.now();
 }

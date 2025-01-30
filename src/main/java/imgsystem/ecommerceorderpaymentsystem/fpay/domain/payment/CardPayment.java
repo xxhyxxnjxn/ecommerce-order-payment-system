@@ -9,7 +9,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class CardPayment {
+public class CardPayment extends TransactionType{
 
     @Id
     @Column(name="payment_id", nullable = false)

@@ -18,13 +18,13 @@ public class ResponsePaymentApproval {
     private String paymentKey;
     private String orderId;
     private String orderName;
-    private String taxExemptionAmount;
+    private Integer taxExemptionAmount;
     private String status;
     private String requestedAt;
     private String approvedAt;
     private String type;
     private String method;
     private Card card;
-    private String totalAmount;
-    private String balanceAmount;
+    private Integer totalAmount;
+    private Integer balanceAmount;
 }

@@ -15,14 +15,14 @@ public class Card {
     private String issuerCode;
     private String acquirerCode;
     private String number;
-    private String installmentPlanMonths;
-    private String isInterestFree;
+    private Integer installmentPlanMonths;
+    private Boolean isInterestFree;
     private String interestPayer;
     private String approveNo;
-    private String useCardPoint;
+    private Boolean useCardPoint;
     private String cardType;
     private String ownerType;
     private String acquireStatus;
     private String receiptUrl;
-    private String amount;
+    private Integer amount;
 }

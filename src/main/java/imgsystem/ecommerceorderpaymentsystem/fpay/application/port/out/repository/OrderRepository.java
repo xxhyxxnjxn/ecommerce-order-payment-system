@@ -3,5 +3,5 @@ package imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.reposito
 import imgsystem.ecommerceorderpaymentsystem.fpay.domain.order.Order;
 
 public interface OrderRepository {
-    public Order save(Order order);
+    Order save(Order order);
 }

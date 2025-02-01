@@ -83,6 +83,21 @@ public class OrderTest {
 
     /**
      * 주문 결제 관련 단위 테스트
+     * - 결제는 주문 완료 상태 일때만 가능하다.
+     * [Test Case #1] orderStatus가 ORDER_COMPLETED이면 return true;
+     * [Exception] orderStatus가 그 외 상태이면 exception
+     */
+
+    @Test
+    public void isOrderCompletedStatus_True_checkOrderStatus() throws Exception {
+        Order order = newPurchaseOrder.toEntity();
+
+        boolean isOrderCompletedStatus = OrderStatus.ORDER_COMPLETED.equals(order.getOrderState());
+        Assertions.assertTrue(isOrderCompletedStatus);
+    }
+
+    /**
+     * 주문 결제 관련 단위 테스트
      * - 결제 취소는 결제 완료 상태 일때만 가능하다.
      * [Test Case #1] orderStatus가 결제 대기이면 return false;
      * [Test Case #2] orderStatus가 결제 완료면 return true;

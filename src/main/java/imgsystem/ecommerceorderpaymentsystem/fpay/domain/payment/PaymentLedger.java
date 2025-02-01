@@ -27,10 +27,11 @@ public class PaymentLedger {
     private int id;
 
     @Column(name="payment_id", nullable = false)
-    private String paymentId;
+    private String paymentId; //임의로 만들어주는 것이 아닌 pg사에서 전달해주는 key? 같은거
 
-    @Column(nullable = false)
-    private String method;
+    @Column(name = "method", nullable = false)
+    @Convert(converter = PaymentMethodConverter.class)
+    private PaymentMethod paymentMethod;
 
     @Column(name = "total_amount",nullable = false)
     private int totalAmount;

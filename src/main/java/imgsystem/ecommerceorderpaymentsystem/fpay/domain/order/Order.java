@@ -66,4 +66,11 @@ public class Order {
 
         throw new IllegalStateException();
     }
+
+    public boolean isOrderCompletedStatus(){
+        if(!OrderStatus.ORDER_COMPLETED.getCode().equals(orderState.getCode()))
+            throw new IllegalStateException("order status is not ORDER_COMPLETED");
+
+        return true;
+    }
 }

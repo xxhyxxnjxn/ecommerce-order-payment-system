@@ -69,11 +69,13 @@ class TossPaymentAPITest {
                 .balanceAmount(1000)
                 .build();
 
-        //when
+        //given
         when(server.approvePayment(paymentApproval)).thenReturn(Calls.<ResponsePaymentApproval>response(responsePaymentApproval));
 
-        //then
+        //when
         ResponsePaymentApproval result = client.approvePayment(paymentApproval);
+
+        //then
         verify(server, Mockito.times(1)).approvePayment(paymentApproval);
         Assertions.assertEquals(result, responsePaymentApproval);
     }

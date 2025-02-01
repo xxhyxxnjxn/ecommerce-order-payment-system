@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -94,6 +95,32 @@ public class OrderTest {
 
         boolean isOrderCompletedStatus = OrderStatus.ORDER_COMPLETED.equals(order.getOrderState());
         Assertions.assertTrue(isOrderCompletedStatus);
+    }
+
+    /**
+     * 주문 결제 관련 단위 테스트
+     * - 결제 승인 시 order 엔티티에 payment_id를 업데이트 한다.
+     */
+    @Test
+    public void updatePaymentId_void_setPaymentIdValue() throws Exception {
+        Order order = newPurchaseOrder.toEntity();
+        String paymentId = "test_20250201";
+        order.setPaymentId(paymentId);
+
+        Assertions.assertEquals("test_20250201", order.getPaymentId());
+    }
+
+    /**
+     * 주문 결제 관련 단위 테스트
+     * - 결제 승인 시 order 엔티티에 orderstatus를 PAYMENT_COMPLETED로 업데이트 한다.
+     */
+    @Test
+    public void updateOrderStatusToPaymentCompleted_void_setOrderStatus() throws Exception {
+        Order order = newPurchaseOrder.toEntity();
+        order.setOrderState(OrderStatus.PAYMENT_COMPLETED);
+        order.getOrderItems().stream().forEach(orderItem -> orderItem.setOrderState(OrderStatus.PAYMENT_COMPLETED));
+
+        Assertions.assertEquals(OrderStatus.PAYMENT_COMPLETED,order.getOrderItems().get(0).getOrderState());
     }
 
     /**

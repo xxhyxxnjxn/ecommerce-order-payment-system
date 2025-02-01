@@ -32,7 +32,6 @@ class TossPaymentAPITest {
         //given
         //request
         PaymentApproval paymentApproval = new PaymentApproval(
-            "NORMAL",
                 "1000",
                 "a4CWyWY5m89PNh7xJwhk1",
                 "5EnNZRJGvaBX7zk2yd8ydw26XvwXkLrx9POLqKQjmAw4b0e1"

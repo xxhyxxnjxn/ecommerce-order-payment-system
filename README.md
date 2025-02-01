@@ -72,3 +72,9 @@ https://docs.google.com/spreadsheets/d/1ts5o2Wm6C4avU44-AHIwWIV1PhUVz4-10soBuVSq
 #### 순서
  1. 일단 제일 먼저 도메인과 response, request dto, 공통 코드, 인프라 관련 틀을 먼저 코드를 작성해주고
  2. 요구사항에 따라서 TDD 를 작성해주면서 해당 관련 비지니스 로직들을 작성해주는게 편한 것 같다 (controller, port, service, repository 등등)
+
+#### TransactionType에 관하여
+- transactionType 결제 타입은 지금 당장은 카드 결제만 고려를 했지만 앞으로 카드, 계좌이체, 가상계좌 등등
+다양한 결제 타입의 확장성을 고려한 개발을 해야한다. 따라서 domain에 TransactionType 이라는 부모클래스를 만들고
+cardPayment,AccountPayment 등등 여러개의 도메인을 만들어준 다음 transactionType을 상속받는다면 repository를 구현할 때에도
+결제 방식 별로 로직을 객체지향적으로 구분할 수 있다는 장점을 가진다.

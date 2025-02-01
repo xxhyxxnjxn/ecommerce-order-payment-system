@@ -7,4 +7,5 @@ import java.io.IOException;
 
 public interface PaymentAPIs {
     ResponsePaymentApproval approvePayment(PaymentApproval paymentApproval) throws IOException;
+    boolean isSuccessRequest(String status);
 }

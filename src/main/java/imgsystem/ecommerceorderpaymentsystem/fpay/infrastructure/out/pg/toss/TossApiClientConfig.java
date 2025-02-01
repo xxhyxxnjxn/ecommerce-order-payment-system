@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -13,10 +14,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 
+@Configuration
 @Slf4j
 public class TossApiClientConfig {
     private static final String BASE_URL = "https://api.tosspayments.com/v1/";
-    private static final String SECRET_KEY = "";
+    private static final String SECRET_KEY = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6:";
 
     @Bean
     public OkHttpClient okHttpClient() {

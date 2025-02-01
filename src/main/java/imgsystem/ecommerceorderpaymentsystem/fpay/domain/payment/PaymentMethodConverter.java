@@ -15,7 +15,7 @@ public class PaymentMethodConverter implements AttributeConverter<PaymentMethod,
 
     @Override
     public PaymentMethod convertToEntityAttribute(String s) {
-        log.info("Converting payment method {} -> {}", s,PaymentMethod.fromMethodName(s));
-        return PaymentMethod.fromMethodName(s);
+        log.info("Converting payment method {} -> {}", s,PaymentMethod.findByMethodName(s));
+        return PaymentMethod.findByMethodName(s);
     }
 }

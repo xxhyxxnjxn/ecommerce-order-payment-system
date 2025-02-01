@@ -1,8 +1,7 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * 금융권에서는 거래 원장이라는 말을 많이 함
@@ -19,7 +18,8 @@ import lombok.Setter;
 @Entity
 @Table(name="payment_transaction")
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
 public class PaymentLedger {
 
     @Id
@@ -45,4 +45,11 @@ public class PaymentLedger {
     @Column(name = "payment_status", nullable = false)
     @Convert(converter = PaymentStatusConverter.class)
     private PaymentStatus paymentStatus;
+
+    @Column(name = "pay_out_amount")
+    private int payOutAmount;
+
+    protected PaymentLedger() {
+
+    }
 }

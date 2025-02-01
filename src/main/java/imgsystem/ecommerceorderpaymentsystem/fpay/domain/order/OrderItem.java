@@ -54,4 +54,8 @@ public class OrderItem {
         this.amount = totalPrice;
         return totalPrice;
     }
+
+    public void updateOrderStatus(OrderStatus orderState) {
+        this.orderState = orderState;
+    }
 }

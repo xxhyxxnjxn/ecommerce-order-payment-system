@@ -73,4 +73,14 @@ public class Order {
 
         return true;
     }
+
+    public void updatePaymentApprove(String paymentKey){
+        updateOrderStatus(OrderStatus.PAYMENT_COMPLETED);
+        this.paymentId = paymentKey;
+    }
+
+    private void updateOrderStatus(OrderStatus orderState){
+        this.orderState = orderState;
+        this.orderItems.stream().forEach(orderItem -> orderItem.updateOrderStatus(orderState));
+    }
 }

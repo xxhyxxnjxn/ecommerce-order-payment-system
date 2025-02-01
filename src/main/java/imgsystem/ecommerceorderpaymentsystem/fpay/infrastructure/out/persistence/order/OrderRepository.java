@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Repository
 @RequiredArgsConstructor
 public class OrderRepository implements imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.repository.OrderRepository {
@@ -16,4 +19,11 @@ public class OrderRepository implements imgsystem.ecommerceorderpaymentsystem.fp
     public Order save(Order order) {
         return jpaOrderRepository.save(order);
     }
+
+    @Override
+    public Optional<Order> findByOrderId(UUID orderId) {
+        return jpaOrderRepository.findById(orderId);
+    }
+
+
 }

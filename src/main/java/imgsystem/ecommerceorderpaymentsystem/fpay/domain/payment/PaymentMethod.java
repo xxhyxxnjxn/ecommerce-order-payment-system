@@ -2,6 +2,7 @@ package imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment;
 
 import lombok.Getter;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -9,16 +10,16 @@ import java.util.stream.Stream;
 
 @Getter
 public enum PaymentMethod {
-    CARD("카드");
+    CARD("카드"),
+    ACCOUNT("계좌이체");
 
     private final String methodName;
 
-    private static final Map<String,String> methodMap = Collections.unmodifiableMap(
-        Stream.of(values()).collect(Collectors.toMap(PaymentMethod::getMethodName, PaymentMethod::name))
-    );
-
-    public static PaymentMethod fromMethodName(String methodName) {
-        return PaymentMethod.valueOf(methodMap.get(methodName));
+    public static PaymentMethod findByMethodName(String methodName) {
+        return Arrays.stream(PaymentMethod.values())
+                .filter(paymentMethod -> paymentMethod.methodName.equals(methodName))
+                .findFirst()
+                .orElseThrow(IllegalAccessError::new);
     }
 
     PaymentMethod(String name) {

@@ -1,6 +1,9 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.PaymentLedger;
+import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.PaymentMethod;
+import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.PaymentStatus;
 import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.payment.Card;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,4 +30,16 @@ public class ResponsePaymentApproval {
     private Card card;
     private Integer totalAmount;
     private Integer balanceAmount;
+
+    public PaymentLedger convertToPaymentLedgerEntity(){
+        return PaymentLedger.builder()
+                .paymentId(this.paymentKey)
+                .paymentMethod(PaymentMethod.findByMethodName(this.method))
+                .totalAmount(this.totalAmount)
+                .balanceAmount(this.balanceAmount)
+                .canceledAmount(0)
+                .paymentStatus(PaymentStatus.valueOf(this.getStatus()))
+                .payOutAmount(0)
+                .build();
+    }
 }

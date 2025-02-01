@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Controller
 @RequiredArgsConstructor
 public class PaymentController {
@@ -28,8 +30,8 @@ public class PaymentController {
         return "fail";
     }
 
-    @GetMapping("/confirm")
-    public String approvePayment(@RequestBody PaymentApproval paymentApproval) {
+    @PostMapping("/confirm")
+    public String approvePayment(@RequestBody PaymentApproval paymentApproval) throws IOException {
 
         return paymentApprovalUseCase.approvePayment(paymentApproval);
     }

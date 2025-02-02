@@ -62,6 +62,8 @@ dependencies {
     testImplementation("org.mockito:mockito-core:3.3.0")
     testImplementation("com.squareup.retrofit2:retrofit-mock:2.10.0")
 
+    // Kafka Client
+    implementation("org.springframework.kafka:spring-kafka")
 }
 
 tasks.withType<Test> {

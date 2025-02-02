@@ -1,0 +1,17 @@
+services:
+  mysql:
+    image: mysql:8.0.33
+    ports:
+      - 11306:3306
+    volumes:
+      #호스트에 있는 디렉토리와 컨테이너에 있는 디렉토리를 연결 시켜주는 역할
+      #항상 왼쪽은 호스트 오른쪽은 도커 컨테이너
+      #docker-entrypoint-initdb.d 여기에 파일을 가져다 놓으면 실행될 때 알아서 실행되기 때문에 초기 스키마 생성이나 테이블 생성을 위한 파일을 여기에 가져다 놓음
+      - /Users/jeonghyeonjin/Documents/Github/ecommerce-order-payment-system/src/main/resources/initdb:/docker-entrypoint-initdb.d
+    command:
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_unicode_ci'
+      - '--lower_case_table_names=1'
+    environment:
+      MYSQL_ROOT_PASSWORD: testbed
+      MYSQL_DATABASE: service-labs

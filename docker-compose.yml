@@ -15,3 +15,33 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: testbed
       MYSQL_DATABASE: service-labs
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      #zookeeper를 구성하는 아이디 ,이 값은 중복되면 안된다.
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+    ports:
+      - "22181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:19092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      #카프카가 주키퍼에 커넥션하기 위한 주소를 설정; "서비스 이름: 내부포트" 로 설정한다.
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2101'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:19092
+      #내부와 외부의 네트워크를 구분하기 위한 설정 또는 보안 관련 설정
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT, PLAINTEXT_HOST:PLAINTEXT
+      #도커를 통해 브로커를 간의 통신을 하기 위한 네트워크
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0

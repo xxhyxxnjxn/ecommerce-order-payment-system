@@ -79,6 +79,12 @@ public class Order {
         this.paymentId = paymentKey;
     }
 
+    public boolean canCancelPayment() {
+        if(OrderStatus.PAYMENT_COMPLETED.equals(this.orderState)) return true;
+
+        return false;
+    }
+
     private void updateOrderStatus(OrderStatus orderState){
         this.orderState = orderState;
         this.orderItems.stream().forEach(orderItem -> orderItem.updateOrderStatus(orderState));

@@ -1,4 +1,4 @@
-package imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.payment;
+package imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.payment.method;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.PaymentLedger;
 import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.PaymentMethod;
 import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.PaymentStatus;
-import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.payment.Card;
+import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.payment.ResponsePaymentCommon;
+import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.payment.method.Card;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,28 +16,18 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ResponsePaymentApproval {
-    private String mId;
+public class ResponsePaymentApproval extends ResponsePaymentCommon {
     private String lastTransactionKey;
-    private String paymentKey;
-    private String orderId;
-    private String orderName;
-    private Integer taxExemptionAmount;
-    private String status;
-    private String requestedAt;
     private String approvedAt;
-    private String type;
     private String method;
     private Card card;
-    private Integer totalAmount;
-    private Integer balanceAmount;
 
     public PaymentLedger convertToPaymentLedgerEntity(){
         return PaymentLedger.builder()
-                .paymentId(this.paymentKey)
+                .paymentId(this.getPaymentKey())
                 .paymentMethod(PaymentMethod.findByMethodName(this.method))
-                .totalAmount(this.totalAmount)
-                .balanceAmount(this.balanceAmount)
+                .totalAmount(this.getTotalAmount())
+                .balanceAmount(this.getBalanceAmount())
                 .canceledAmount(0)
                 .paymentStatus(PaymentStatus.valueOf(this.getStatus()))
                 .payOutAmount(0)

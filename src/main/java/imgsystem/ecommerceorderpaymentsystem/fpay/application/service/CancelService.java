@@ -14,24 +14,26 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CancelService implements PaymentCancelUseCase {
+    /**
+     * 1. purchase_order 테이블에서 paymentId,orderId가 같은 것을 가져온다. && orderItems도 같이 가져옴
+     *    purchase_order orderstatus를 확인한다. -> isNotOrderStatusPurchaseDecision -> true이면 다음 로직 실행
+     *
+     * 2. payment_transaction 테이블에서 paymentStatus가 Done 이고 paymentId가 같은 것을 가져온다.
+     *    payment_transaction totalAmount 값이 CancelOrder 객체에 들어있는 값보다 같거나 크다 -> true 이면 다음 로직 실행
+     *
+     * 3. toss payment에 cancel api를 요청한다
+     *    cancel객체 status가 done이면 다음 로직을 실행한다.
+     *
+     * 4. paymentTransaction status, amount 값 변경 -> 이거 아니고 새로 취소 내역 insert
+     *
+     * 5. 이 밑에 두개는 한묶음
+     *      orderItems cancelOrder에 들어있는 itemidxes 값에 맞는 데이터 값 변경
+     *      purchase_order status, price 값 변경
+     */
 
     @Override
     public boolean cancelPayment(CancelOrder cancelOrder) {
 
-        //1. purchase_order 테이블에서 paymentId,orderId가 같은 것을 가져온다. && orderItems도 같이 가져옴
-        //purchase_order orderstatus를 확인한다. -> isNotOrderStatusPurchaseDecision -> true이면 다음 로직 실행
-
-        //3. payment_transaction 테이블에서 paymentStatus가 Done 이고 paymentId가 같은 것을 가져온다.
-        //payment_transaction totalAmount 값이 CancelOrder 객체에 들어있는 값보다 같거나 크다 -> true 이면 다음 로직 실행
-
-        //toss payment에 cancel api를 요청한다
-        //cancel객체 status가 done이면 다음 로직을 실행한다.
-
-        //paymentTransaction status, amount 값 변경 -> 이거 아니고 새로 취소 내역 insert
-
-        //이 밑에 두개는 한묶음
-        //orderItems cancelOrder에 들어있는 itemidxes 값에 맞는 데이터 값 변경
-        //purchase_order status, price 값 변경
 
         return true;
     }

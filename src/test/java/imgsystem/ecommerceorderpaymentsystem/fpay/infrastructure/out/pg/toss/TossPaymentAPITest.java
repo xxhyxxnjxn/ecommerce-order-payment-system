@@ -1,8 +1,10 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss;
 
 import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.ResponsePaymentApproval;
+import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.ResponsePaymentCancel;
 import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.payment.method.Card;
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.payment.PaymentApproval;
+import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.payment.PaymentCancel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,70 +12,31 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import retrofit2.Response;
 import retrofit2.mock.Calls;
 
 import java.io.IOException;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class TossPaymentAPITest {
 
-    @Mock
-    TossPaymentAPIs server;
-
-    @InjectMocks
-    TossPaymentAPI client;
+    @Autowired
+    TossPaymentAPIs tossPaymentAPIs;
 
     @Test
-    public void approvePayment_2xx_sendPaymentApproval() throws IOException {
-        //given
-        //request
-        PaymentApproval paymentApproval = new PaymentApproval(
-                "1000",
-                "a4CWyWY5m89PNh7xJwhk1",
-                "5EnNZRJGvaBX7zk2yd8ydw26XvwXkLrx9POLqKQjmAw4b0e1"
+    public void cancelPayment_2xx_sendPaymentCancel() throws IOException {
+        PaymentCancel paymentCancel = new PaymentCancel(
+                "TEST",
+                100
         );
-
-        //response
-        ResponsePaymentApproval responsePaymentApproval = ResponsePaymentApproval.builder()
-                .mId("tosspayments")
-                .lastTransactionKey("9C62B18EEF0DE3EB7F4422EB6D14BC6E")
-                .paymentKey("5EnNZRJGvaBX7zk2yd8ydw26XvwXkLrx9POLqKQjmAw4b0e1")
-                .orderId("a4CWyWY5m89PNh7xJwhk1")
-                .orderName("토스 티셔츠 외 2건")
-                .taxExemptionAmount(0)
-                .status("DONE")
-                .requestedAt("2024-02-13T12:17:57+09:00")
-                .approvedAt("2024-02-13T12:18:14+09:00")
-                .type("NORMAL")
-                .method("카드")
-                .card(Card.builder()
-                        .issuerCode("71")
-                        .acquirerCode("71")
-                        .number("12345678****000*")
-                        .installmentPlanMonths(0)
-                        .isInterestFree(false)
-                        .interestPayer(null)
-                        .approveNo("00000000")
-                        .useCardPoint(false)
-                        .cardType("신용")
-                        .ownerType("개인")
-                        .acquireStatus("READY")
-                        .receiptUrl("https://dashboard.tosspayments.com/receipt/redirection?transactionId=tviva20240213121757MvuS8&ref=PX")
-                        .amount(1000).build())
-                .totalAmount(1000)
-                .balanceAmount(1000)
-                .build();
-
-        //given
-        when(server.approvePayment(paymentApproval)).thenReturn(Calls.<ResponsePaymentApproval>response(responsePaymentApproval));
-
-        //when
-        ResponsePaymentApproval result = client.approvePayment(paymentApproval);
-
-        //then
-        verify(server, Mockito.times(1)).approvePayment(paymentApproval);
-        Assertions.assertEquals(result, responsePaymentApproval);
+        String paymentKey = "tgen_202502012244327gmR1";
+        Response<ResponsePaymentCancel> response = tossPaymentAPIs.cancelPayment(paymentKey, paymentCancel).execute();
+        System.out.println(response);
+        System.out.println(response.body().getCancels().get(0).getCancelStatus());
     }
 }

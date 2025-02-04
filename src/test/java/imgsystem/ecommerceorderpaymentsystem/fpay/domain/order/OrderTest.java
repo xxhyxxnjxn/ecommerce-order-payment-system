@@ -125,48 +125,16 @@ public class OrderTest {
 
     /**
      * 주문 결제 관련 단위 테스트
-     * - 결제 취소는 결제 완료 상태(PAYMENT_COMPLETED) 일때만 가능하다.
-     * [Test Case #1] orderStatus가 결제 완료가 아니면 return false;
-     * [Test Case #2] orderStatus가 결제 완료면 return true;
+     * - '구매 결정'의 주문 상태 일 때는 결제 취소를 할 수 없다.
+     * [Test Case #1] orderStatus가 구매결정이 아니면 return true;
+     * [Test Case #2] orderStatus가 구매결정이면 return false;
      * [Exception] null일 때 exception
      */
     @Test
-    public void canCancelPayment_True_Normal() throws Exception {
+    public void isNotOrderStatusPurchaseDecision_true_OrderStatusIsNotPurchaseDecision() throws Exception {
         Order order = newPurchaseOrder.toEntity();
         order.setOrderState(OrderStatus.PAYMENT_COMPLETED);
 
-        Assertions.assertTrue(OrderStatus.PAYMENT_COMPLETED.equals(order.getOrderState()));
+        Assertions.assertTrue(order.isNotOrderStatusPurchaseDecision());
     }
-
-    /**
-     * 주문 결제 관련 단위 테스트
-     * - '구매 결정'의 주문 상태 일 때는 결제 취소를 할 수 없다.
-     * [Test Case #1] orderStatus가 구매결정이면 return true;
-     * [Test Case #2] orderStatus가 나머지 상태이면 return false;
-     * [Exception] null일 때 exception
-     */
-    @Test
-    public void canNotCancelPayment_True_Normal() throws Exception {
-        Order order = newPurchaseOrder.toEntity();
-        order.setOrderState(OrderStatus.PURCHASE_DECISION);
-
-        Assertions.assertTrue(OrderStatus.PURCHASE_DECISION.equals(order.getOrderState()));
-    }
-
-
-    /**
-     * 주문 취소 관련 단위  테스트
-     * - request CancelOrder 객체에 itemIdx 가 존재하지 않으면 전체 취소, itemIdx가 존재하면 부분 취소
-     * [Test Case #1] itemIdx가 비어있으면 return true;
-     * [Test Case #2] itemIdx가 비어있지 않으면 return false;
-     * [Exception] null일 때 오류 처리
-     */
-
-    /**
-     * 주문 취소 관련 단위 테스트
-     * - 취소 가능한 금액보다 큰 취소 금액은 취소가 불가능하다.
-     * [Test Case #1] 취소 요청 금액 < 취소 가능한 금액(잔고) return true;
-     * [Test Case #2] 취소 요청 금액 > 취소 가능한 금액(잔고) return false;
-     * [Test Case #3] 취소 요청 금액 = 취소 가능한 금액(잔고) return true; -> 전체 취소 ?
-     */
 }

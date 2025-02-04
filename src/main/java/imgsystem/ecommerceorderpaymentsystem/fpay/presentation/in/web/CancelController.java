@@ -1,5 +1,6 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.in.web;
 
+import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.PaymentCancelUseCase;
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order.CancelOrder;
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order.PurchaseOrder;
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.response.NewPurchaseOrder;
@@ -12,8 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CancelController {
 
+    private final PaymentCancelUseCase paymentCancelUseCase;
+
     @PostMapping("/cancel")
-    public void cancel(@RequestBody @Valid CancelOrder cancelOrder){
+    public boolean cancel(@RequestBody @Valid CancelOrder cancelOrder){
         //주문 취소
+       return paymentCancelUseCase.cancelPayment(cancelOrder);
     }
 }

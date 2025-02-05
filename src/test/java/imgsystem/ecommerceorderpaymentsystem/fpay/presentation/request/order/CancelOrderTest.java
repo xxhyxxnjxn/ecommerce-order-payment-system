@@ -44,12 +44,4 @@ class CancelOrderTest {
         Assertions.assertFalse(cancelOrder.getItemIdxes().length > 0);
     }
 
-    /**
-     * 주문 취소 관련 단위 테스트
-     * - 취소 가능한 금액보다 큰 취소 금액은 취소가 불가능하다.
-     * [Test Case #1] 취소 요청 금액 < 취소 가능한 금액(잔고) return true;
-     * [Test Case #2] 취소 요청 금액 > 취소 가능한 금액(잔고) return false;
-     * [Test Case #3] 취소 요청 금액 = 취소 가능한 금액(잔고) return true; -> 전체 취소 ?
-     */
-
 }

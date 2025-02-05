@@ -1,9 +1,14 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.application.service;
 
+import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.GetOrderUseCase;
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.PaymentCancelUseCase;
+import imgsystem.ecommerceorderpaymentsystem.fpay.domain.order.Order;
 import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.PaymentLedger;
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order.CancelOrder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * 3. 주문 취소
@@ -13,6 +18,7 @@ import org.springframework.stereotype.Service;
  * - 취소 가능한 금액보다 큰 취소 금액은 취소가 불가능하다.
  */
 @Service
+@RequiredArgsConstructor
 public class CancelService implements PaymentCancelUseCase {
     /**
      * 1. purchase_order 테이블에서 paymentId,orderId가 같은 것을 가져온다. && orderItems도 같이 가져옴
@@ -30,11 +36,12 @@ public class CancelService implements PaymentCancelUseCase {
      *      orderItems cancelOrder에 들어있는 itemidxes 값에 맞는 데이터 값 변경
      *      purchase_order status, price 값 변경
      */
+    private final GetOrderUseCase getOrderUseCase;
 
     @Override
     public boolean cancelPayment(CancelOrder cancelOrder) {
-
-
+        Order wantedCancelOrder = getOrderUseCase.getOrderIdAndPaymentId(cancelOrder.getOrderId(), cancelOrder.getPaymentKey());
+        System.out.println("wantedcancelOrder value : "+ wantedCancelOrder.getOrderId());
         return true;
     }
 }

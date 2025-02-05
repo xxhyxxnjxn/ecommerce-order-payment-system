@@ -12,7 +12,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CancelOrder {
-    @NotBlank
     private UUID orderId;
     private int[] itemIdxes;         // itemIdx 정보가 Empty면 전체 취소
     private String cancelReason;    // 취소 사유

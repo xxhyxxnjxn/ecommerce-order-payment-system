@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -31,6 +32,6 @@ public class OrderService implements CreateNewOrderUseCase, GetOrderUseCase {
 
     @Override
     public Order getOrderIdAndPaymentId(UUID orderId, String paymentId) {
-        return null;
+        return orderRepository.findByOrderIdAndPaymentId(orderId, paymentId);
     }
 }

@@ -25,5 +25,10 @@ public class OrderRepository implements imgsystem.ecommerceorderpaymentsystem.fp
         return jpaOrderRepository.findById(orderId);
     }
 
+    @Override
+    public Order findByOrderIdAndPaymentId(UUID orderId, String paymentId) {
+        return jpaOrderRepository.findByOrderIdAndPaymentId(orderId, paymentId);
+    }
+
 
 }

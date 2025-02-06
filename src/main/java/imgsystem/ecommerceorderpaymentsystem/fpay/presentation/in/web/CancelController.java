@@ -18,7 +18,7 @@ public class CancelController {
     private final PaymentCancelUseCase paymentCancelUseCase;
 
     @PostMapping("/cancel")
-    public boolean cancel(@RequestBody @Valid CancelOrder cancelOrder) throws IOException {
+    public boolean cancel(@RequestBody @Valid CancelOrder cancelOrder) throws Exception {
         //주문 취소
        return paymentCancelUseCase.cancelPayment(cancelOrder);
     }

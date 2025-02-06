@@ -52,7 +52,7 @@ public class CancelService implements PaymentCancelUseCase {
 
     @Transactional
     @Override
-    public boolean cancelPayment(CancelOrder cancelOrder) throws IOException {
+    public boolean cancelPayment(CancelOrder cancelOrder) throws Exception {
         Order wantedCancelOrder = getOrderUseCase.getOrderIdAndPaymentId(cancelOrder.getOrderId(), cancelOrder.getPaymentKey());
         System.out.println("wantedcancelOrder value : "+ wantedCancelOrder.getOrderId());
 
@@ -71,8 +71,9 @@ public class CancelService implements PaymentCancelUseCase {
                     //전체 update
                     wantedCancelOrder.orderCancelAll();
                 }
+                return true;
         }
 
-        return true;
+        throw new Exception("Order Cancellation is failed");
     }
 }

@@ -6,5 +6,5 @@ import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order.Can
 import java.io.IOException;
 
 public interface PaymentCancelUseCase {
-    boolean cancelPayment(CancelOrder cancelOrder) throws IOException;
+    boolean cancelPayment(CancelOrder cancelOrder) throws Exception;
 }

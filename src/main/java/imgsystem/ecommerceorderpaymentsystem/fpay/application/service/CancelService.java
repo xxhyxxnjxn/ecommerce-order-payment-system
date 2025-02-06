@@ -74,6 +74,6 @@ public class CancelService implements PaymentCancelUseCase {
                 return true;
         }
 
-        throw new Exception("Order Cancellation is failed");
+        throw new Exception("Order cancel is failed");
     }
 }

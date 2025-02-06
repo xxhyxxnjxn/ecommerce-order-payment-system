@@ -19,13 +19,12 @@ import lombok.experimental.SuperBuilder;
 public class ResponsePaymentApproval extends ResponsePaymentCommon {
     private String lastTransactionKey;
     private String approvedAt;
-    private String method;
     private Card card;
 
     public PaymentLedger convertToPaymentLedgerEntity(){
         return PaymentLedger.builder()
                 .paymentId(this.getPaymentKey())
-                .paymentMethod(PaymentMethod.findByMethodName(this.method))
+                .paymentMethod(PaymentMethod.findByMethodName(this.getMethod()))
                 .totalAmount(this.getTotalAmount())
                 .balanceAmount(this.getBalanceAmount())
                 .canceledAmount(0)

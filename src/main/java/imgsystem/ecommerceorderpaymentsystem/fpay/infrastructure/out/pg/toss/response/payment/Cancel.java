@@ -24,4 +24,5 @@ public class Cancel {
     private int refundableAmount;
     private String cancelStatus;
     private String cancelRequestId;
+
 }

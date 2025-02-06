@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/order")
 @RequiredArgsConstructor
@@ -16,7 +18,7 @@ public class CancelController {
     private final PaymentCancelUseCase paymentCancelUseCase;
 
     @PostMapping("/cancel")
-    public boolean cancel(@RequestBody @Valid CancelOrder cancelOrder){
+    public boolean cancel(@RequestBody @Valid CancelOrder cancelOrder) throws IOException {
         //주문 취소
        return paymentCancelUseCase.cancelPayment(cancelOrder);
     }

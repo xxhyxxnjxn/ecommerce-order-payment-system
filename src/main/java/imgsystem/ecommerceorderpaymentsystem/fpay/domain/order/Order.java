@@ -79,10 +79,26 @@ public class Order {
         this.paymentId = paymentKey;
     }
 
-
     public boolean isNotOrderStatusPurchaseDecision() {
 
         return !(OrderStatus.PURCHASE_DECISION.equals(this.orderState));
+    }
+
+    public void orderCancelAll() {
+        updateOrderStatus(OrderStatus.ORDER_CANCELED);
+    }
+
+    public void orderCancel(int[] itemIdxes) {
+        for(int itemIdx : itemIdxes) {
+            this.orderItems.stream().filter(orderItem -> orderItem.getItemIdx()==itemIdx)
+                    .forEach(orderItem -> orderItem.updateOrderStatus(OrderStatus.ORDER_CANCELED));
+        }
+        int count = (int) this.orderItems.stream().filter(orderItem -> orderItem.getOrderState().equals(OrderStatus.ORDER_CANCELED)).count();
+        if(count < this.orderItems.size()) {
+            this.orderState = OrderStatus.ORDER_PARTIAL_CANCELED;
+        }else if(count == this.orderItems.size()) {
+            this.orderState = OrderStatus.ORDER_CANCELED;
+        }
     }
 
     private void updateOrderStatus(OrderStatus orderState){

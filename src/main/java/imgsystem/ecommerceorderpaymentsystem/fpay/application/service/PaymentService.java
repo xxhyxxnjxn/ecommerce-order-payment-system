@@ -1,11 +1,14 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.application.service;
 
+import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.GetPaymentUseCase;
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.PaymentApprovalUseCase;
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.api.PaymentAPIs;
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.repository.PaymentRepository;
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.repository.TransactionTypeRepository;
 import imgsystem.ecommerceorderpaymentsystem.fpay.domain.order.Order;
+import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.PaymentLedger;
 import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.PaymentMethod;
+import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.PaymentStatus;
 import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.TransactionType;
 import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.persistence.order.OrderRepository;
 import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.ResponsePaymentApproval;
@@ -17,12 +20,13 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class PaymentService implements PaymentApprovalUseCase {
+public class PaymentService implements PaymentApprovalUseCase, GetPaymentUseCase {
     private final PaymentRepository paymentRepository;
     private final Set<TransactionTypeRepository> transactionTypeRepositories;
     private final HashMap<String, TransactionTypeRepository> transactionTypeRepositoryHashMap = new HashMap<>();
@@ -81,5 +85,10 @@ public class PaymentService implements PaymentApprovalUseCase {
 
         transactionTypeRepository = transactionTypeRepositoryHashMap.get(paymentMethod.toString().toLowerCase());
         if(transactionTypeRepository == null) throw new IllegalStateException("transactionTypeRepository is null");
+    }
+
+    @Override
+    public Optional<PaymentLedger> getPaymentStatusAndPaymentId(PaymentStatus paymentStatus, String paymentId) {
+        return paymentRepository.findByPaymentStatusAndPaymentId(paymentStatus,paymentId);
     }
 }

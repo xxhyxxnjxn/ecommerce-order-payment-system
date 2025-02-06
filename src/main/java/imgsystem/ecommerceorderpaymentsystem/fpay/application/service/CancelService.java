@@ -1,13 +1,22 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.application.service;
 
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.GetOrderUseCase;
+import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.GetPaymentUseCase;
+import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.PaymentApprovalUseCase;
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.PaymentCancelUseCase;
+import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.api.PaymentAPIs;
+import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.repository.PaymentRepository;
 import imgsystem.ecommerceorderpaymentsystem.fpay.domain.order.Order;
 import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.PaymentLedger;
+import imgsystem.ecommerceorderpaymentsystem.fpay.domain.payment.PaymentStatus;
+import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.ResponsePaymentCancel;
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.order.CancelOrder;
+import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.payment.PaymentCancel;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -37,11 +46,33 @@ public class CancelService implements PaymentCancelUseCase {
      *      purchase_order status, price 값 변경
      */
     private final GetOrderUseCase getOrderUseCase;
+    private final GetPaymentUseCase getPaymentUseCase;
+    private final PaymentAPIs tossPaymentAPI;
+    private final PaymentRepository paymentRepository;
 
+    @Transactional
     @Override
-    public boolean cancelPayment(CancelOrder cancelOrder) {
+    public boolean cancelPayment(CancelOrder cancelOrder) throws IOException {
         Order wantedCancelOrder = getOrderUseCase.getOrderIdAndPaymentId(cancelOrder.getOrderId(), cancelOrder.getPaymentKey());
         System.out.println("wantedcancelOrder value : "+ wantedCancelOrder.getOrderId());
+
+        Optional<PaymentLedger> wantedCancelPaymentLedger = getPaymentUseCase.getPaymentStatusAndPaymentId(PaymentStatus.DONE, cancelOrder.getPaymentKey());
+        if(wantedCancelPaymentLedger.isPresent() &&
+                wantedCancelOrder.isNotOrderStatusPurchaseDecision() &&
+                wantedCancelPaymentLedger.get().isBalanceAmountBiggerThanCancelAmount(cancelOrder.getCancellationAmount())) {
+            ResponsePaymentCancel responsePaymentCancel = tossPaymentAPI.cancelPayment(cancelOrder.getPaymentKey(), new PaymentCancel(cancelOrder.getCancelReason(), cancelOrder.getCancellationAmount()));
+                //취소내역 insert
+                paymentRepository.save(responsePaymentCancel.toEntity());
+
+                if(cancelOrder.hasItemIdxes()) {
+                    //itemidx 별로 상태값 update
+                    wantedCancelOrder.orderCancel(cancelOrder.getItemIdxes());
+                }else {
+                    //전체 update
+                    wantedCancelOrder.orderCancelAll();
+                }
+        }
+
         return true;
     }
 }

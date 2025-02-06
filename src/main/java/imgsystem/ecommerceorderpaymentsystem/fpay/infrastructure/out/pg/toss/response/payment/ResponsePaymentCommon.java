@@ -16,6 +16,7 @@ public class ResponsePaymentCommon {
     private String orderName;
     private Integer taxExemptionAmount;
     private String status;
+    private String method;
     private String requestedAt;
     private String type;
     private Integer totalAmount;

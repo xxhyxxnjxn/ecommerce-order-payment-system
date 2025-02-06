@@ -137,4 +137,18 @@ public class OrderTest {
 
         Assertions.assertTrue(order.isNotOrderStatusPurchaseDecision());
     }
+
+    @Test
+    public void countOrderStatus() throws Exception {
+        Order order = newPurchaseOrder.toEntity();
+        order.setOrderState(OrderStatus.PAYMENT_COMPLETED);
+
+        int count = (int) order.getOrderItems().stream().filter(orderItem -> orderItem.getOrderState().equals(OrderStatus.ORDER_CANCELED)).count();
+        if(count < order.getOrderItems().size()) {
+            System.out.println(OrderStatus.ORDER_PARTIAL_CANCELED);
+        }else {
+            System.out.println(OrderStatus.ORDER_CANCELED);
+
+        }
+    }
 }

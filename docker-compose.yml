@@ -1,6 +1,17 @@
 services:
+  app:
+    image: fastcampus/fast-ecommerce:latest
+    platform: linux/amd64
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
+    networks:
+      - monitoring
+
   mysql:
-    image: mysql:8.0.33
+    image: mysql
+    platform: linux/amd64
     ports:
       - 11306:3306
     volumes:
@@ -15,6 +26,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: testbed
       MYSQL_DATABASE: service-labs
+    networks:
+      - monitoring
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -27,23 +40,70 @@ services:
       ZOOKEEPER_SYNC_LIMIT: 2
     ports:
       - "22181:2181"
+    networks:
+      - monitoring
 
   kafka:
-    image: confluentinc/cp-kafka:latest
+    image: wurstmeister/kafka
+    platform: linux/amd64
     depends_on:
       - zookeeper
     ports:
       - "19092:19092"
       - "19094:19094"
+      #- "9998:9999"
     environment:
       KAFKA_BROKER_ID: 1
       #카프카가 주키퍼에 커넥션하기 위한 주소를 설정; "서비스 이름: 내부포트" 로 설정한다.
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:19092,EXTERNAL://0.0.0.0:19094
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:19092,EXTERNAL://localhost:19094
       #내부와 외부의 네트워크를 구분하기 위한 설정 또는 보안 관련 설정
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       #도커를 통해 브로커를 간의 통신을 하기 위한 네트워크
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-      KAFKA_LISTENERS: INTERNAL://0.0.0.0:19092,EXTERNAL://0.0.0.0:19094
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      #KAFKA_JMX_PORT: 9998
+      #KAFKA_JMX_HOSTNAME: localhost
+      #JMX_PORT: 9998
+    networks:
+      - monitoring
+
+  kafka-exporter:
+    image: bitnami/kafka-exporter:latest
+    depends_on:
+      - kafka
+    ports:
+      - "9308:9308"
+    command: [ "--kafka.server=kafka:19092"]
+    networks:
+      - monitoring
+
+  prometheus:
+    image: bitnami/prometheus:latest  # ✅ M1 지원 이미지
+    container_name: prometheus
+    platform: linux/arm64
+    ports:
+      - "9090:9090"
+    volumes:
+      - /Users/jeonghyeonjin/Documents/Github/ecommerce-order-payment-system/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    platform: linux/arm64
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge

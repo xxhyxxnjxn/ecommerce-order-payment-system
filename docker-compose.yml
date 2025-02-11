@@ -51,7 +51,7 @@ services:
     ports:
       - "19092:19092"
       - "19094:19094"
-      #- "9998:9999"
+      - "9999:9999"
     environment:
       KAFKA_BROKER_ID: 1
       #카프카가 주키퍼에 커넥션하기 위한 주소를 설정; "서비스 이름: 내부포트" 로 설정한다.
@@ -64,9 +64,9 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      #KAFKA_JMX_PORT: 9998
-      #KAFKA_JMX_HOSTNAME: localhost
-      #JMX_PORT: 9998
+      KAFKA_JMX_PORT: 9999
+      KAFKA_JMX_HOSTNAME: localhost
+      JMX_PORT: 9999
     networks:
       - monitoring
 

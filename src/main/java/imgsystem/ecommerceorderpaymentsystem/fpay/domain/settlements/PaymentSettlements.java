@@ -32,7 +32,7 @@ public class PaymentSettlements {
     private int totalAmount;
 
     @Column(name = "pay_out_amount")
-    private int payOutAmount;
+    private int payOutAmount; //totalAmount - 카드사 수수료 - pg사 수수료 = payOutAmount
 
     @Column(name = "canceled_amount")
     private int canceledAmount;

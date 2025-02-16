@@ -1,0 +1,56 @@
+package imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.mock;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.TossPaymentAPIs;
+import lombok.extern.slf4j.Slf4j;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.concurrent.TimeUnit;
+
+@Configuration
+@Slf4j
+public class MockApiClientConfig {
+    private static final String BASE_URL = "https://28dcbd1d-df5c-452b-add7-e06f28da4722.mock.pstmn.io/";
+    private static final String SECRET_KEY = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6:";
+
+    @Bean
+    public OkHttpClient mockClient() {
+        Base64.Encoder encoder = Base64.getEncoder();
+        byte[] keyBytes = encoder.encode((SECRET_KEY+":").getBytes(StandardCharsets.UTF_8));
+        String authorization = "Basic " + new String(keyBytes);
+        log.info("key : {}", authorization);
+
+        return new OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(chain ->  {
+                    Request original = chain.request().newBuilder().addHeader("Authorization", authorization).build();
+                    return chain.proceed(original);
+                })
+                .build();
+    }
+
+    @Bean
+    public Retrofit mockRetrofit(OkHttpClient okHttpClient) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule()); // request message에 시간 관련 타입을 설정해주려고
+        return new Retrofit.Builder().baseUrl(BASE_URL)
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+                .client(okHttpClient)
+                .build();
+    }
+
+    @Bean
+    public MockPaymentAPIs createMockApiClient(Retrofit retrofit){
+        return retrofit.create(MockPaymentAPIs.class);
+    }
+}

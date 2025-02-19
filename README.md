@@ -81,3 +81,5 @@ https://docs.google.com/spreadsheets/d/1ts5o2Wm6C4avU44-AHIwWIV1PhUVz4-10soBuVSq
 다양한 결제 타입의 확장성을 고려한 개발을 해야한다. 따라서 domain에 TransactionType 이라는 부모클래스를 만들고
 cardPayment,AccountPayment 등등 여러개의 도메인을 만들어준 다음 transactionType을 상속받는다면 repository를 구현할 때에도
 결제 방식 별로 로직을 객체지향적으로 구분할 수 있다는 장점을 가진다.
+
+#### Kafka에 관하여

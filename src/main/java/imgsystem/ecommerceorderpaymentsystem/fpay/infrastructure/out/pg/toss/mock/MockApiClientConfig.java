@@ -22,7 +22,7 @@ public class MockApiClientConfig {
     private static final String SECRET_KEY = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6:";
 
     @Bean
-    public OkHttpClient mockClient() {
+    public OkHttpClient mockClient() { // 메소드의 명칭에 따라 빈이 등록되기 때문에 메소드 명을 바꿔줘야한다.
         Base64.Encoder encoder = Base64.getEncoder();
         byte[] keyBytes = encoder.encode((SECRET_KEY+":").getBytes(StandardCharsets.UTF_8));
         String authorization = "Basic " + new String(keyBytes);
@@ -40,17 +40,17 @@ public class MockApiClientConfig {
     }
 
     @Bean
-    public Retrofit mockRetrofit(OkHttpClient okHttpClient) {
+    public Retrofit mockRetrofit(OkHttpClient mockClient) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule()); // request message에 시간 관련 타입을 설정해주려고
         return new Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
-                .client(okHttpClient)
+                .client(mockClient)
                 .build();
     }
 
     @Bean
-    public MockPaymentAPIs createMockApiClient(Retrofit retrofit){
-        return retrofit.create(MockPaymentAPIs.class);
+    public MockPaymentAPIs createMockApiClient(Retrofit mockRetrofit){
+        return mockRetrofit.create(MockPaymentAPIs.class);
     }
 }

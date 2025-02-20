@@ -1,6 +1,7 @@
-package imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss;
+package imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.mock;
 
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.api.PaymentAPIs;
+import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.TossPaymentAPIs;
 import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.ResponsePaymentApproval;
 import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.ResponsePaymentCancel;
 import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.response.ResponsePaymentSettlement;
@@ -21,43 +22,31 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class TossPaymentAPI implements PaymentAPIs {
-    private final TossPaymentAPIs tossPaymentAPIs;
+public class MockPaymentAPI implements PaymentAPIs {
+    private final MockPaymentAPIs mockPaymentAPIs;
 
     @Override
     public ResponsePaymentApproval approvePayment(PaymentApproval paymentApproval) throws IOException {
-        Response<ResponsePaymentApproval> response = tossPaymentAPIs.approvePayment(paymentApproval).execute();
-        log.info("TossPaymentAPI paymentApproval paymentKey : {}, orderId : {}, amount: {}", paymentApproval.getPaymentKey(), paymentApproval.getOrderId(), paymentApproval.getAmount());
-        log.info("TossPaymentAPI approvePayment response : {}", response);
-
-        if(response.isSuccessful()) {
-            return response.body();
-        }
-
-        throw new IOException(response.message());
+        return null;
     }
 
     @Override
-    public ResponsePaymentCancel cancelPayment(String paymentKey, PaymentCancel paymentCancel) throws IOException {
-        Response<ResponsePaymentCancel> response = tossPaymentAPIs.cancelPayment(paymentKey, paymentCancel).execute();
-        log.info("TossPaymentAPI approvePayment response : {}", response);
-
-        if(response.isSuccessful()) {
-            return response.body();
-        }
-
-        throw new IOException(response.message());
+    public ResponsePaymentCancel cancelPayment(String PaymentKey, PaymentCancel paymentCancel) throws IOException {
+        return null;
     }
 
     @Override
     public List<ResponsePaymentSettlement> requestSettlement(PaymentSettlement paymentSettlement) throws IOException {
-        return List.of();
+        Response<List<ResponsePaymentSettlement>> response = mockPaymentAPIs.settlement(paymentSettlement).execute();
+        if(response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+            return response.body();
+        }
+
+        throw new IOException(response.message());
     }
 
     @Override
     public boolean isSuccessRequest(String status) {
-        return "DONE".equals(status);
+        return false;
     }
-
-
 }

@@ -1,5 +1,6 @@
 package imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in;
 
-public interface NewPaymentSettlementUseCase {
+public interface CreateNewPaymentSettlementUseCase {
     boolean sendSettlementInfo();
+
 }

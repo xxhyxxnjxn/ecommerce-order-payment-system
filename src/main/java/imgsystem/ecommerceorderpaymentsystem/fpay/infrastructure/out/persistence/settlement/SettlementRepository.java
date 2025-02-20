@@ -19,6 +19,7 @@ public class SettlementRepository implements imgsystem.ecommerceorderpaymentsyst
         jpaSettlementRepository.save(paymentSettlements);
     }
 
+    //TODO : bulkinsert
     @Override
     public void bulkInsert(List<PaymentSettlements> paymentSettlements) {
         String sqlStatement = "INSERT INTO payment_settlements (payment_id, method, settlements_status, total_amount, pay_out_amount, canceled_amount, sold_date, paid_out_date)" +

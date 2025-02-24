@@ -37,7 +37,7 @@ public class MockPaymentAPI implements PaymentAPIs {
 
     @Override
     public List<ResponsePaymentSettlement> requestSettlement(PaymentSettlement paymentSettlement) throws IOException {
-        Response<List<ResponsePaymentSettlement>> response = mockPaymentAPIs.settlement(paymentSettlement).execute();
+        Response<List<ResponsePaymentSettlement>> response = mockPaymentAPIs.settlement().execute();
         if(response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
             return response.body();
         }

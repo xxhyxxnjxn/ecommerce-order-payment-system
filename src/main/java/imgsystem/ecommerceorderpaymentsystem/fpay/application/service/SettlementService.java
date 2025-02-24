@@ -43,12 +43,13 @@ public class SettlementService implements CreateNewPaymentSettlementUseCase, Get
     }
 
     @Override
-    public void getPaymentSettlement(PaymentSettlement paymentSettlement) throws IOException {
+    public boolean getPaymentSettlement(PaymentSettlement paymentSettlement) throws IOException {
         List<ResponsePaymentSettlement> response = mockPaymentAPI.requestSettlement(paymentSettlement);
         // response 받은거 toEntity로 바꾼다음 builKInsert에 넣기
         List<PaymentSettlements> settlementsHistories = response.stream()
                 .map(ResponsePaymentSettlement::toEntity)
                 .toList();
         settlementRepository.bulkInsert(settlementsHistories);
+        return true;
     }
 }

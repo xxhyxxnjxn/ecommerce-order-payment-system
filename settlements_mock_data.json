@@ -173,7 +173,20 @@
     "approvedAt": "2023-11-25T13:54:05+09:00",
     "soldDate": "2023-11-25",
     "paidOutDate": "2023-11-30",
-    "card": null,
+    "card": {
+      "issuerCode": "41",
+      "acquirerCode": "41",
+      "number": "54287966****537*",
+      "installmentPlanMonths": 0,
+      "isInterestFree": false,
+      "interestPayer": null,
+      "approveNo": "36284234",
+      "useCardPoint": false,
+      "cardType": "신용",
+      "ownerType": "개인",
+      "acquireStatus": "READY",
+      "amount": 41500
+    },
     "virtualAccount": null,
     "transfer": {
       "bankCode": "92",

@@ -8,6 +8,7 @@ import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.payment.P
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.settlement.PaymentSettlement;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 public interface MockPaymentAPIs {
 
-    @POST("settlements")
-    Call<List<ResponsePaymentSettlement>> settlement(@Body PaymentSettlement paymentSettlement);
+    @GET("settlements")
+    Call<List<ResponsePaymentSettlement>> settlement();
 
 }

@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @Slf4j
 public class MockApiClientConfig {
-    private static final String BASE_URL = "https://28dcbd1d-df5c-452b-add7-e06f28da4722.mock.pstmn.io/";
+    private static final String BASE_URL = "https://a16d7bf0-802e-422b-82bf-a7aec8715555.mock.pstmn.io/";
     private static final String SECRET_KEY = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6:";
 
     @Bean

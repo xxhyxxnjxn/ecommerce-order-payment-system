@@ -5,5 +5,5 @@ import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.settlemen
 import java.io.IOException;
 
 public interface GetPaymentSettlementUseCase {
-    void getPaymentSettlement(PaymentSettlement paymentSettlement) throws IOException;
+    boolean getPaymentSettlement(PaymentSettlement paymentSettlement) throws IOException;
 }

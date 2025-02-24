@@ -46,6 +46,9 @@ public class SettlementService implements CreateNewPaymentSettlementUseCase, Get
     public void getPaymentSettlement(PaymentSettlement paymentSettlement) throws IOException {
         List<ResponsePaymentSettlement> response = mockPaymentAPI.requestSettlement(paymentSettlement);
         // response 받은거 toEntity로 바꾼다음 builKInsert에 넣기
-        // settlementRepository.bulkInsert();
+        List<PaymentSettlements> settlementsHistories = response.stream()
+                .map(ResponsePaymentSettlement::toEntity)
+                .toList();
+        settlementRepository.bulkInsert(settlementsHistories);
     }
 }

@@ -83,3 +83,13 @@ cardPayment,AccountPayment 등등 여러개의 도메인을 만들어준 다음 
 결제 방식 별로 로직을 객체지향적으로 구분할 수 있다는 장점을 가진다.
 
 #### Kafka에 관하여
+ZOOKEEPER 설정 옵션 설명
+-ZOOKEEPER_SERVER_ID
+Zookeeper Cluster에서 유일하게 Zookeeper를 식별해주는 ID 값이다.
+동일 클러스터 내에서 이 값은 중복 되면 안된다. 단일 Kafka 구성이기 때문에 이 값은 의미가 없다.
+-ZOOKEEPER_CLIENT_PORT
+Client(Kafka)가 connect할 때 사용할 서비스 port 설정 옵션
+-ZOOKEEPER_INIT_LIMIT
+주키퍼 초기화를 위한 제한 시간을 설정한다.
+-ZOOKEEPER_SYNC_LIMIT
+주키퍼 리더와 나머지 서버들 간의 싱크 타임아웃 시간 설정 옵션

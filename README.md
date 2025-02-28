@@ -82,14 +82,31 @@ https://docs.google.com/spreadsheets/d/1ts5o2Wm6C4avU44-AHIwWIV1PhUVz4-10soBuVSq
 cardPayment,AccountPayment 등등 여러개의 도메인을 만들어준 다음 transactionType을 상속받는다면 repository를 구현할 때에도
 결제 방식 별로 로직을 객체지향적으로 구분할 수 있다는 장점을 가진다.
 
-#### Kafka에 관하여
-ZOOKEEPER 설정 옵션 설명
--ZOOKEEPER_SERVER_ID
-Zookeeper Cluster에서 유일하게 Zookeeper를 식별해주는 ID 값이다.
-동일 클러스터 내에서 이 값은 중복 되면 안된다. 단일 Kafka 구성이기 때문에 이 값은 의미가 없다.
--ZOOKEEPER_CLIENT_PORT
-Client(Kafka)가 connect할 때 사용할 서비스 port 설정 옵션
--ZOOKEEPER_INIT_LIMIT
-주키퍼 초기화를 위한 제한 시간을 설정한다.
--ZOOKEEPER_SYNC_LIMIT
-주키퍼 리더와 나머지 서버들 간의 싱크 타임아웃 시간 설정 옵션
+### 정산 - 대용량 데이터 처리의 필요성
+ #### 가정 1) 지금은 정산 데이터가 테스트 용도로 4개 밖에 없지만, Fast-Ecommerce가 실제 서비스를 시작하고 홍보가 잘되고 제품이 좋아서 거래 건이 폭발적으로 늘어났다.
+ #### 가정 2) 그래서 1일 기준 정산 데이터가 총 1억건이고, 1번에 5,000건 씩 20,000번 API 요청을 보내고 데이터를 DB에 쓰는 작업을 처리 해야 한다.
+
+ 예상 되는 문제 1) Batch Bulk Insert 시, **다양한 요인**(DB의 Table Lock으로 Timeout Exception, 네트워크 문제, 서버 리소스 문제 등)
+                 으로 발생할 수 있는 데이터 유실
+
+ 예상 되는 문제 2) 점점 더 많아지는 정산 데이터로 인해 정산 프로세스 처리 및 데이터 적재까지 소요되는 시간이 점차 증가
+
+ 예상 되는 문제 3) 동일한 데이터를 타 부서에서도 **동일한 API**(네트워크 리소스 낭비, API의 Late Limit 초과로 비용 발생 등)를 호출해서 데이터를 적재 후, 연결
+
+HOW ?
+
+Kafka(Message Queue)를 이용하면 빠르고 안정적으로 정산 데이터를 처리 및 적재가 가능하며 API를 통해서 가져온 원천 데이터를 공유 및 재사용이 가능하다.
+
+1. 최초 API의 요청 결과로 응답 받은 Response Message를 Publisher 가 MQ에 Message를 발생(publish) 한다.
+2. Consumer가 발행된 최초 메시지를 읽어서 처리하고 있는 동안, Publisher는 2번째 API의 요청 결과로 응답 받은 Response Message를 발행한다.
+3. Response Message가 비어(Empty) 있을 때까지 이 과정을 계속해서 반복한다.
+4. 발행하고 구독한 메시지를 타 부서의 Application에서도 구독이 가능하다.
+
+![img.png](img.png)
+Spring Batch가 Kafka Producer 역할을 한다.
+- API 응답 메시지를 Kafka의 Broker에게 메시지를 발행하는 역할을 한다.
+- 다른 프레임워크를 사용해서 구현 가능하다
+
+Spring Boot가 Kafka Consumer 역할을 한다.
+- Kafka의 Broker에게 발행된 메시지를 구독하고 처리하는 역할을 한다.
+- 다른 프레임워크를 사용해서 구현 가능하다

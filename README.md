@@ -110,3 +110,35 @@ Spring Batch가 Kafka Producer 역할을 한다.
 Spring Boot가 Kafka Consumer 역할을 한다.
 - Kafka의 Broker에게 발행된 메시지를 구독하고 처리하는 역할을 한다.
 - 다른 프레임워크를 사용해서 구현 가능하다
+
+### KafKa
+
+대량의 데이터를 안정적이고 실시간으로 처리할 수 있도록 설계된 **메시징 플랫폼**을 말한다.
+기업에서 **대규모 데이터 처리 및 이벤트 기반 시스템**을 구축하는데 널리 사용되며 인체에 중추 신경계에 해당하는 역할을 수행한다.
+
+- 안정적 : partition 2번이 죽었다고 해서 데이터가 날아가는 것이 아니라 안정적으로 보존되는 것
+
+- 실시간 : producer에서 데이터를 publishing 하면 consumer가 실시간으로 데이터를 받는 것
+
+- 이벤트 기반 시스템 : 어떠한 데이터를 직접적으로 처리하는 것이 아니라 이벤트만 발행해서 해당 이벤트를 적절하게 컨슈머가 처리하는 것
+
+#### Producer
+
+Kafka의 Broker에게 메시지(message == record == event == data)를 발행하는 역할을 수행하는 주체를 **Producer**라고 한다.
+메시지(Record)의 구조는 Key-value 형태를 가지며 Key의 Hash 값을 기준으로 Topic의 Partition을 선택한다.
+
+메시지 전달 과정
+1. Records 직렬화
+
+   메시지를 직렬화해서 Key와 Value를 바이트로 변홚나다. 대표적인 직렬화 포맷은 JSON과 Avro가 있다.
+2. 파티셔닝(Patitioner)
+3. 압축
+4. 메시지 배치
+5. 전달
+
+#### Topic
+
+topic은 N개의 partition을 가질 수 있다. 파티션을 지정할 때에는 라운드 로빈 방식으로 차례대로 지정할 수도 있고 key의 hash값을 기준으로 partition을 지정할 수도 있다.
+
+
+

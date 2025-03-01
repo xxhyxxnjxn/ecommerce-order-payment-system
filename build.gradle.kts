@@ -10,6 +10,9 @@ plugins {
     // OpenAPI 3 Spec을 기반으로 SwaggerUI 생성(HTML, CSS, JS)
     id("org.hidetake.swagger.generator") version "2.18.2"
     // 위에 두개 라이브러리를 어떻게 사용할 수 있냐면 dependencies 에 있는 기능을 통해 사용할 수 있다.
+
+    // AVRO 추가
+    id("com.github.davidmc24.gradle.plugin.avro") version "1.9.1"
 }
 
 
@@ -28,6 +31,10 @@ configurations {
 
 repositories {
     mavenCentral()
+    //avro 추가
+    maven {
+        url = uri("https://packages.confluent.io/maven")
+    }
 }
 
 dependencies {
@@ -64,6 +71,17 @@ dependencies {
 
     // Kafka Client
     implementation("org.springframework.kafka:spring-kafka")
+    // avro 추가
+    implementation("org.apache.avro:avro:1.11.3")
+    implementation("io.confluent:kafka-avro-serializer:7.0.1")
+}
+
+//avro 추가
+tasks.withType<com.github.davidmc24.gradle.plugin.avro.GenerateAvroJavaTask> {
+    fieldVisibility = "PRIVATE"
+    setCreateSetters("false")
+    setSource("src/main/avro")
+    setOutputDir(file("build/generated-sources"))
 }
 
 tasks.withType<Test> {

@@ -55,8 +55,14 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       #카프카가 주키퍼에 커넥션하기 위한 주소를 설정; "서비스 이름: 내부포트" 로 설정한다.
+      #카프카랑 주키퍼는 1:1이기 때문에 카프카를 하나 늘릴 려면 주키퍼를 하나 더 늘려야한다.
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      #Kafka 서비스용 IpAddr;Port - Kafka가 서비스를 제공하는 주소와 포트(다수 등록 가능)
       KAFKA_LISTENERS: INTERNAL://0.0.0.0:19092,EXTERNAL://0.0.0.0:19094
+      # KAFKA_ADVERTISED_LISTENERS : Kafka Client가 받는 서비스 IP_Addr: port / 클라이언트에게 metadata와 함께 반환할 서버 주소
+      #Internal : 내부망에서 접근 가능한 IP Address -Docker 내부 네트워크 대역에서 Kafka 간의 내부 통신을 위한 IP Address (1,3,5,7,9개의 브로커들과 통신을 할 때 내부단에서 통신을 할 때)
+      #External : 외부망에서 접근 가능한 IP Address - Docker 외부 네트워크 대역에서 Kafka와 통신을 위한 IP Address
+      #localhost:19094에 접근하면 포트포워딩을 통해 kafka:19092로 바뀐다
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:19092,EXTERNAL://localhost:19094
       #내부와 외부의 네트워크를 구분하기 위한 설정 또는 보안 관련 설정
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
@@ -69,6 +75,31 @@ services:
       JMX_PORT: 9999
     networks:
       - monitoring
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:latest
+    environment:
+      #N개가 된다면 더 추가하면 된다
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'PLAINTEXT://kafka:19092'
+      SCHEMA_REGISTRY_HOST_NAME: 'schema-registry'
+      SCHEMA_REGISTRY_LISTENERS: 'http://0.0.0.0:8085'
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: 'INFO'
+    ports:
+      - 8085:8085
+    depends_on:
+      - kafka
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    depends_on:
+      - kafka
+    ports:
+      - 8081:8080
+    environment:
+      - DYNAMIC_CONFIG_ENABLED=true
+      - KAFKA_CLUSTERS_0_NAME=Fast-Ecommerce-Kafka
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:19092
 
   kafka-exporter:
     image: bitnami/kafka-exporter:latest

@@ -80,8 +80,8 @@ dependencies {
 tasks.withType<com.github.davidmc24.gradle.plugin.avro.GenerateAvroJavaTask> {
     fieldVisibility = "PRIVATE"
     setCreateSetters("false")
-    setSource("src/main/avro")
-    setOutputDir(file("build/generated-sources"))
+    setSource("src/main/avro") //avro 파일의 위치를 찾아서 자바 클래스로 변경
+    setOutputDir(file("build/generated-sources")) // 자바 클래스로 변경한 파일 저장 경로
 }
 
 tasks.withType<Test> {

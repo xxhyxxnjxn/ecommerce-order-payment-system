@@ -2,6 +2,7 @@ package imgsystem.ecommerceorderpaymentsystem.fpay.presentation.in.web;
 
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.CreateNewPaymentSettlementUseCase;
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.GetPaymentSettlementUseCase;
+import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.SendSettlementsInfoUseCase;
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.settlement.PaymentSettlement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import java.io.IOException;
 public class SettlementController {
     private final CreateNewPaymentSettlementUseCase settlementUseCase;
     private final GetPaymentSettlementUseCase getPaymentSettlementUseCase;
+    private final SendSettlementsInfoUseCase sendSettlementsInfoUseCase;
 
     @GetMapping("settlement")
     public boolean settlement(){
@@ -27,6 +29,6 @@ public class SettlementController {
 
     @GetMapping("kafka-settlement")
     public boolean kafkaBulkSettlement(PaymentSettlement paymentSettlement) throws IOException {
-        return getPaymentSettlementUseCase.send(paymentSettlement);
+        return sendSettlementsInfoUseCase.send(paymentSettlement);
     }
 }

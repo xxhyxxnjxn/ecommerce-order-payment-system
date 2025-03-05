@@ -2,6 +2,7 @@ package imgsystem.ecommerceorderpaymentsystem.fpay.application.service;
 
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.CreateNewPaymentSettlementUseCase;
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.GetPaymentSettlementUseCase;
+import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.in.SendSettlementsInfoUseCase;
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.api.PaymentAPIs;
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.kafka.Producer;
 import imgsystem.ecommerceorderpaymentsystem.fpay.application.port.out.repository.SettlementRepository;
@@ -12,6 +13,8 @@ import imgsystem.ecommerceorderpaymentsystem.fpay.infrastructure.out.pg.toss.res
 import imgsystem.ecommerceorderpaymentsystem.fpay.presentation.request.settlement.PaymentSettlement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import sw.sustainable.springlabs.fpay.infrastructure.out.mq.record.RPaymentSettlements;
+import sw.sustainable.springlabs.fpay.infrastructure.out.mq.record.Settlements;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -22,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SettlementService implements CreateNewPaymentSettlementUseCase, GetPaymentSettlementUseCase, SendSettlementsInfoUseCase
 {
-    private final static String SETTLEMENT_TOPIC = "settlements"
+    private final static String SETTLEMENT_TOPIC = "settlements";
     private final Producer<PaymentSettlements> producer;
     private final Producer<RPaymentSettlements> settlementsProducer;
     private final PaymentAPIs mockPaymentAPI;
@@ -62,7 +65,7 @@ public class SettlementService implements CreateNewPaymentSettlementUseCase, Get
                 .map(ResponsePaymentSettlement::toEntity)
                 .toList();
         RPaymentSettlements record = RPaymentSettlements.newBuilder()
-                .setSettlements(settlementsHistories.stream().map(data -> Settlement.newBuilder()
+                .setSettlements(settlementsHistories.stream().map(data -> Settlements.newBuilder()
                         .setId(data.getId())
                         .setPaymentKey(data.getPaymentKey())
                         .setTotalAmount(data.getTotalAmount())
@@ -70,7 +73,7 @@ public class SettlementService implements CreateNewPaymentSettlementUseCase, Get
                         .setCanceledAmount(data.getCanceledAmount())
                         .setMethod(data.getMethod().toString())
                         .setSoldDate(data.getSoldDate().toString())
-                        .setPaidOutData(data.getPaidOutDate().toString())
+                        .setPaidOutDate(data.getPaidOutDate().toString())
                         .build()
         ).toList()).build();
         settlementsProducer.send(SETTLEMENT_TOPIC, record);

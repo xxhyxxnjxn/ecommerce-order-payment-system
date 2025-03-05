@@ -14,7 +14,13 @@ public class KafkaProducer<T> implements Producer<T> {
 
     @Override
     public void send(String topic, T message){
-        log.info("sending payloa={} to topic={}", message, topic);
+        log.info("sending topic={} ,message={}", topic, message.toString());
         kafkaTemplate.send(topic, message);
     }
+
+    @Override
+    public boolean send(String topic, String key, T message){
+       return false;
+    }
+
 }

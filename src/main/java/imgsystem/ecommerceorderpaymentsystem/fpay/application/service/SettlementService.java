@@ -20,9 +20,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SettlementService implements CreateNewPaymentSettlementUseCase, GetPaymentSettlementUseCase
+public class SettlementService implements CreateNewPaymentSettlementUseCase, GetPaymentSettlementUseCase, SendSettlementsInfoUseCase
 {
+    private final static String SETTLEMENT_TOPIC = "settlements"
     private final Producer<PaymentSettlements> producer;
+    private final Producer<RPaymentSettlements> settlementsProducer;
     private final PaymentAPIs mockPaymentAPI;
     private final SettlementRepository settlementRepository;
 
@@ -50,6 +52,28 @@ public class SettlementService implements CreateNewPaymentSettlementUseCase, Get
                 .map(ResponsePaymentSettlement::toEntity)
                 .toList();
         settlementRepository.bulkInsert(settlementsHistories);
+        return true;
+    }
+
+    @Override
+    public boolean send(PaymentSettlement paymentSettlement) throws IOException {
+        List<ResponsePaymentSettlement> response = mockPaymentAPI.requestSettlement(paymentSettlement);
+        List<PaymentSettlements> settlementsHistories = response.stream()
+                .map(ResponsePaymentSettlement::toEntity)
+                .toList();
+        RPaymentSettlements record = RPaymentSettlements.newBuilder()
+                .setSettlements(settlementsHistories.stream().map(data -> Settlement.newBuilder()
+                        .setId(data.getId())
+                        .setPaymentKey(data.getPaymentKey())
+                        .setTotalAmount(data.getTotalAmount())
+                        .setPayOutAmount(data.getPayOutAmount())
+                        .setCanceledAmount(data.getCanceledAmount())
+                        .setMethod(data.getMethod().toString())
+                        .setSoldDate(data.getSoldDate().toString())
+                        .setPaidOutData(data.getPaidOutDate().toString())
+                        .build()
+        ).toList()).build();
+        settlementsProducer.send(SETTLEMENT_TOPIC, record);
         return true;
     }
 }

@@ -24,4 +24,9 @@ public class SettlementController {
     public boolean bulkSettlement(PaymentSettlement paymentSettlement) throws IOException {
         return getPaymentSettlementUseCase.getPaymentSettlement(paymentSettlement);
     }
+
+    @GetMapping("kafka-settlement")
+    public boolean kafkaBulkSettlement(PaymentSettlement paymentSettlement) throws IOException {
+        return getPaymentSettlementUseCase.send(paymentSettlement);
+    }
 }

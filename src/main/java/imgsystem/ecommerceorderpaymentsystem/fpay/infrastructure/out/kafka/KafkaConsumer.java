@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class KafkaConsumer {
+    private final static String SETTLEMENT_TOPIC = "settlements"
     private final SettlementRepository settlementRepository;
 
       @KafkaListener(topics = "kafkaTest", groupId = "group_1")
@@ -22,4 +23,21 @@ public class KafkaConsumer {
         System.out.println("## kafkaConsumer settlement ##"+paymentSettlements.getPaymentKey());
         settlementRepository.save(paymentSettlements);
       }
+
+    @KafkaListener(topics = SETTLEMENT_TOPIC)
+    public void settlementListener(ConsumerRecord<String, RPaymentSettlements> record) {
+        RPaymentSettlements payload = record.value();
+        List<Settlements> record = payload.getSettlements();
+        List<PaymentSettlements> rows = records.stream().map(record -> PaymentSettlements.builder()
+                .paymentKey(record.getPaymentKey())
+                .method(PaymentMethod.valueOf(record.getMethod()))
+                .paymentStatus(PaymentStatus.valueOf("SETTLEMENTS_REQUESTED"))
+                .totalAmount(record.getTotalAmount())
+                .payOutAmount(record.getPayOutAmount())
+                .canceledAmount(record.getCanceledAmount())
+                .soldDate(Date.valueOf(record.getSoldDate()))
+                .paidOutDate(Date.valueOf(record.getPaidOutDate()))
+        ).toList();
+        settlementRepository.bulkInsert(rows);
+    }
 }

@@ -26,15 +26,15 @@ public class OrderController {
     @Test
     public void newOrder_2XX_CorrectConstraintValue() throws Exception {
         //controller가 있어야만 test 동작 가능
-//        Order order = new Order("정현진", "010-5699-9064");
+//        Order order = new Order("정현진", "010-5699-9064"); // 1. Request DTO 를 생성한다.
 //
-//        String requestJson = objectMapper.writeValueAsString(order);
-//        this.mockMvc.perform(RestDocumentationRequestBuilders.post("/order/new")
+//        String requestJson = objectMapper.writeValueAsString(order); // 2. Request DTO를 ObjectMapper를 이용해서 Json 형식으로 변환한다.
+//        this.mockMvc.perform(RestDocumentationRequestBuilders.post("/order/new") // 3-1. MockMVC를 이용해서 Http 요청을 정의한다.
 //                        .contentType(MediaType.APPLICATION_JSON)
 //                        .accept(MediaType.APPLICATION_JSON)
 //                        .content(requestJson))
-//                .andExpect(status().isOk())
-//                .andDo(document("CorrectRequestMessage",
+//                .andExpect(status().isOk()) // 3-2. 요청에 대한 응답 상태를 예상한다.
+//                .andDo(document("CorrectRequestMessage", // 3-3. API Documents의 이름과 Req/Resp Message Format을 정의한다.
 //                                PayloadDocumentation.requestFields(
 //                                        PayloadDocumentation.fieldWithPath("name").description("주문자명")
 //                                                .attributes((key("constraint").value("주문자명을 입력 해주세요."))),

@@ -8,6 +8,9 @@ ARG JAR_FILE=build/libs/*.jar
 ENV CUSTOM_NAME default
 
 # jar 파일을 컨테이너 내부에 복사
+# COPY HOST_FILE_DIR spring-labs-0.0.1-SNAP
+# COPY HOST_FILE_DIR app.jar
+# COPY HOST_FILE_DIR fast-ecommerce.jar
 COPY ${JAR_FILE} app.jar
 
 # 외부 호스트 8080 포트로 노출

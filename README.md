@@ -157,6 +157,7 @@ consumers는 메시지 처리를 정상적으로 하지 못하고 오류가 발�
 Q. avro와 다른 어떤 종류가 있는지 왜 avro를 선택 ??
 
 #### 도커 이미지로 로컬 서버에 배포하기
+Dockerfile은 Docker container image를 생성하기 위한 script(설정 파일)을 말한다.
 
 
 

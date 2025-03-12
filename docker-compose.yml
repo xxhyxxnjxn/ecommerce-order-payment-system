@@ -1,13 +1,15 @@
 services:
   app:
     image: fastcampus/fast-ecommerce:latest
-    platform: linux/amd64
     ports:
       - 8080:8080
+    environment:
+      SPRING_PROFILES_ACTIVE: dev-docker
     depends_on:
       - mysql
     networks:
-      - monitoring
+      default_bridge:
+        ipv4_address: 172.26.0.10
 
   mysql:
     image: mysql
@@ -27,7 +29,8 @@ services:
       MYSQL_ROOT_PASSWORD: testbed
       MYSQL_DATABASE: service-labs
     networks:
-      - monitoring
+      default_bridge:
+        ipv4_address: 172.26.0.14
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -41,7 +44,8 @@ services:
     ports:
       - "22181:2181"
     networks:
-      - monitoring
+      default_bridge:
+        ipv4_address: 172.26.0.11
 
   kafka:
     image: wurstmeister/kafka
@@ -74,7 +78,8 @@ services:
       KAFKA_JMX_HOSTNAME: localhost
       JMX_PORT: 9999
     networks:
-      - monitoring
+      default_bridge:
+        ipv4_address: 172.26.0.12
 
   schema-registry:
     image: confluentinc/cp-schema-registry:latest
@@ -89,7 +94,8 @@ services:
     depends_on:
       - kafka
     networks:
-      - monitoring
+      default_bridge:
+        ipv4_address: 172.26.0.13
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
@@ -102,8 +108,6 @@ services:
       - DYNAMIC_CONFIG_ENABLED=true
       - KAFKA_CLUSTERS_0_NAME=Fast-Ecommerce-Kafka
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:19092
-    networks:
-      - monitoring
 
   kafka-exporter:
     image: bitnami/kafka-exporter:latest
@@ -113,7 +117,8 @@ services:
       - "9308:9308"
     command: [ "--kafka.server=kafka:19092"]
     networks:
-      - monitoring
+      default_bridge:
+        ipv4_address: 172.26.0.15
 
   prometheus:
     image: bitnami/prometheus:latest  # ✅ M1 지원 이미지
@@ -124,7 +129,8 @@ services:
     volumes:
       - /Users/jeonghyeonjin/Documents/Github/ecommerce-order-payment-system/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
-      - monitoring
+      default_bridge:
+        ipv4_address: 172.26.0.16
 
   grafana:
     image: grafana/grafana:latest
@@ -137,8 +143,12 @@ services:
     depends_on:
       - prometheus
     networks:
-      - monitoring
+      default_bridge:
+        ipv4_address: 172.26.0.17
 
 networks:
-  monitoring:
-    driver: bridge
+  default_bridge:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.26.0.0/16

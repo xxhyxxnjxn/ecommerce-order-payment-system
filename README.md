@@ -180,6 +180,7 @@ Dockerfile은 Docker container image를 생성하기 위한 script(설정 파일
 ![img_4.png](img_4.png)
 
 이러한 결과값들을 가지고 성능을 더 올려달라고 요청할 수 있다.
+근데 저런 성능테스트를 가지고 어떻게 부하가 생기는지 알 수 있지 ??
 
 
 

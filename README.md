@@ -182,5 +182,32 @@ Dockerfile은 Docker container image를 생성하기 위한 script(설정 파일
 이러한 결과값들을 가지고 성능을 더 올려달라고 요청할 수 있다.
 근데 저런 성능테스트를 가지고 어떻게 부하가 생기는지 알 수 있지 ??
 
+### ec2 생성 후 배포
+ec2 서버 생성 후 인텔리제이로 ssh, 및 sftp 연결
+sftp : tools - deployment - Configurations -> 서버 설정, ssh 설정
+ssh : 터미널 클릭해서 화살표 누르면 서버 접속 가능
 
+#### 도커 패키지 설치
+1. 우분투 시스템 패키지 업데이트
+   sudo apt-get update
+2. 필요한 패키지 설치
+   sudo apt-get install apt-transport-https ca-certicates curl gnupg-agent softwareproperties-common
+3. Docker의 공식 GPG키를 추가
+   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - 
+4. Docker의 공식 apt 저장소를 추가
+   sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+5. 시스템 패키지 업데이트
+   sudo apt-get update
+6. Docker 설치
+   sudo apt-get install docker-ce docker-ce-cli containerd.io 
+7. Docker 설치 확인
+   sudo systemctl status docker 
+
+#### 도커 컴포즈 설치
+1. sudo apt -y install jq
+2. VERSION=$(curl --silent https://api.github.com/repos/docker/compose/releases/latest | jq .name -r)
+3. DESTINATION=/usr/bin/docker-compose
+4. sudo curl -L https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-$(uname -s)-$(uname -m) -o $DESTINATION
+5. sudo chmod 755 $DESTINATION
+6. docker-compose -v
 

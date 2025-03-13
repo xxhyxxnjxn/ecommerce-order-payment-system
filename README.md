@@ -211,3 +211,5 @@ ssh : 터미널 클릭해서 화살표 누르면 서버 접속 가능
 5. sudo chmod 755 $DESTINATION
 6. docker-compose -v
 
+#### aws ec2 서버가 외부에서 접속이 안될 경우 인바운드 규칙을 확인해야함 !! port 설정 안되어있으면 추가해주기
+

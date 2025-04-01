@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Pod #파드라는 종류를 만들거다
 
 metadata: #pod의 기본적인 정보를 기입
-  name: nginx-pod
+  name: nginx-pod-1
 
 spec: #pod의 세부 정보
   containers: #pod 하나에는 하나의 컨테이너가 들어가 있는데 그 컨테이너의 정보
@@ -18,3 +18,31 @@ spec: #pod의 세부 정보
 #   curl localhost:80 -> 응답 날라옴
 # 2. 포트 포워딩 (포트 연결)
 #   kubectl port-forword pod/nginx-pod 80(로컬에서의 port):80(pod에서의 port)
+---
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: nginx-pod-2
+
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+      ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: nginx-pod-3
+
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+      ports:
+        - containerPort: 80
+# 이렇게 하면 pod가 3개 띄워진다.
+# 하지만 이렇게 하나씩 적어주면 100개 증설할 땐 ? 어려움 -> deployment 활용

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: nginx-deployment
+
+#Deployment 세부 정보
+spec:
+  replicas: 3 # pod 몇개 생성할 건지?
+  selector:
+    matchLabels:
+      app:  nginx-deployment-app #nginx-deployment-app 이라는 label을 가진 pod를 배포할 거야 / metedata-labels-app 이름과 똑같아야함
+
+  # 배포할 pod에 대한 정보
+  template:
+    metadata:
+      labels: # pod에 대한 카테고리를 임의로 지정해서 붙일 수 있다.
+        app: nginx-deployment-app
+    spec:
+      containers: #pod를 띄울 컨테이너 정보
+        - name: nginx-container
+          image: nginx
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80

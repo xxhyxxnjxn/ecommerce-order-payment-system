@@ -346,3 +346,8 @@ kubectl apply -f nginx-pod.yaml
 
 ### 2025-04-01 Service
 
+
+### 2025-04-03 aws 서버 두개 만들어서 springboot/mysql, kafka 연동
+1. kafka Listener 이슈
+2. spring boot, mysql 연동 안되는 이슈
+

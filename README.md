@@ -346,6 +346,14 @@ kubectl apply -f nginx-pod.yaml
 
 ### 2025-04-01 Service
 
+서비스(Service)란 ? 외부로부터 들어오는 트래픽을 받아, 파드에 균등하게 분배해주는 로드밸런서 역할을 하는 기능
+
+Service 종류
+- NodePort : 쿠버네티스 내부에서 해당 서비스에 접속하기 위한 포트를 열고 외부에서 접속 가능하도록 한다.
+- ClusterIP : 쿠버네티스 내부에서만 통신할 수 있는 IP 주소를 부여, 외부에서는 요청할 수 없다.
+- LoadBalancer : 외부의 로드밸런서(AWS의 로드밸런서 등)를 활용해 외부에서 접속할 수 있도록 연결한다.
+
+![img_9.png](img_9.png)
 
 ### 2025-04-03 aws 서버 두개 만들어서 springboot/mysql, kafka 연동
 1. kafka Listener 이슈

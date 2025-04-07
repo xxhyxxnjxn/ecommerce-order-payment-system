@@ -365,3 +365,8 @@ Service 종류
 ### 2025-04-07 쿠버네티스 실습
 1. 쿠버네티스는 self-healing 컨테이너가 죽으면 자동으로 복구되는 셀프 힐링 기능을 가지고 있다.
 
+<실습 방법>
+1. docker ps 
+2. 컨테이너 아이디 확인 -> docker kill 컨테이너 아이디
+3. kubectl get pods로 restart 부분 확인
+

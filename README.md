@@ -219,6 +219,9 @@ ssh : 터미널 클릭해서 화살표 누르면 서버 접속 가능
 근데 도커 컴포즈.yml 파일은 그냥 내가 수동으로 aws에서 작성 해줌
 issue 1. 맥북에서 만든 도커파일 이미지랑 aws 랑 아키텍처가 달라서 aws는 x86어쩌고 맥북은 arm? 어쩌고 여서 아키텍처가 달라서 spring boot 실행 안됨 그래서 맥북에서 플랫폼 지정해서
 이미지 새로 빌드 해줌
+docker buildx build --platform linux/amd64 -t xxhyxxnjxn/fast-ecommerce-aws --load .
+docker push xxhyxxnjxn/fast-ecommerce-aws
+
 issue 2. mysql compose 파일에 init 스크립트 경로 달라서 생성 못해줘서 내가 그냥 수동으로 스크립트 부어줌
 issue 3. aws 프리티어 용량 너무 작아서 그냥 임의로 용량 늘렸는데 .. kafka 돌리다가 뻑남
 ** 추후 나중에 cicd로 docker-compose 파일 가져오는거 해보기

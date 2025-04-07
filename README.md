@@ -299,9 +299,11 @@ minikube 설치 가이드 -> https://minikube.sigs.k8s.io/docs/start/?arch=%2Fli
 1. pod 삭제 
 
 kubectl delete pod [pod 이름]
-2. pod list 확인
+2. pod , deployment, service list 확인
 
 kubectl get pods 
+kubectl get deployment
+kubectl get service
 
 ** nignx-pod 실습하다가 알게된 사실
 윈도우에서 vm에 pod에 접속하려니 안되는 경우가 발생
@@ -326,6 +328,13 @@ kubectl port-forward pod/[pod명] [로컬에서의 포트]/[파드에서의 포�
 
 7. 매니페스트 파일에 적혀져있는 리소스(파드 등) 생성 및 매니페스트 파일 내용 수정 반영
 kubectl apply -f nginx-pod.yaml
+
+8. 쿠버네티스에 이전에 띄워놨던 서버들 다 삭제 하는 명령어
+kubectl delete all --all
+
+9. 디플로이먼트 및 서비스 삭제
+kubectl delete deployment [deployment 이름]
+kubectl delete service [service 이름]
 
 ### 2025-03-31 Deployment -> 실습 : deplayment0401.yaml 메니페스트 파일
 

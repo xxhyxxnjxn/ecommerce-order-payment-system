@@ -6,7 +6,7 @@ metadata:
 
 #Deployment 세부 정보
 spec:
-  replicas: 3 # pod 몇개 생성할 건지?
+  replicas: 5 # pod 몇개 생성할 건지?
   selector:
     matchLabels:
       app:  nginx-deployment-app #nginx-deployment-app 이라는 label을 가진 pod를 배포할 거야 / metedata-labels-app 이름과 똑같아야함

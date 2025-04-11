@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: mysql-deployment
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  mysql-deployment-db
+
+  template:
+    metadata:
+      labels:
+        app: mysql-deployment-db
+    spec:
+      containers:
+        - name: mysql-container
+          image: mysql
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-root-password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: mysql-database
+          volumeMounts: #파드 내부에 있는 컨테이너에서 어떤 부분을 volume 으로 사용할건지 정의
+            - mountPath: /var/lib/mysql #mysql 컨테이너 내부에 있는 데이터가 저장되는 경로 / 이제 이 경로를 내부에 위치 시키지 않고 외부로 연결 시키겠다.
+              name: mysql-persistent-storage
+      volumes:
+        - name: mysql-persistent-storage # volumeMounts 이름이랑 일치해야함 / 컨테이너 공간이랑 연결시키기 위해서
+          persistentVolumeClaim:
+            claimName: mysql-pvc

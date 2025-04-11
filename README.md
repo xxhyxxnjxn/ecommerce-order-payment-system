@@ -383,3 +383,147 @@ Service 종류
 
 오브젝트를 만든다 or 띄운다 : 파드, 디플로이먼드, 서비스를 통틀어서 오브젝트라고 부름
 
+### 2025-04-11
+
+컨피그맵(ConfigMap)을 활용해 환경변수 분리하기
+
+1) ConfigMap 매니페스트 파일 생성하기
+
+spring-config.yaml
+```
+apiVersion: v1
+kind: ConfigMap
+
+# ConfigMap 기본 정보
+metadata:
+  name: spring-config # ConfigMap 이름
+
+# Key, Value 형식으로 설정값 저장
+data:
+  my-account: jscode
+  my-password: password123
+```
+
+2) Deployment 매니페스트 파일 생성하기
+
+spring-deployment.yaml
+```
+apiVersion: apps/v1
+kind: Deployment
+
+# Deployment 기본 정보
+metadata:
+  name: spring-deployment # Deployment 이름
+
+# Deployment 세부 정보
+spec:
+  replicas: 5 # 생성할 파드의 복제본 개수
+  selector:
+    matchLabels:
+      app: backend-app # 아래에서 정의한 Pod 중 'app: backend-app'이라는 값을 가진 파드를 선택
+
+  # 배포할 Pod 정의
+  template:
+    metadata:
+      labels: # 레이블 (= 카테고리)
+        app: backend-app
+    spec:
+      containers:
+        - name: spring-container # 컨테이너 이름
+          image: spring-server # 컨테이너를 생성할 때 사용할 이미지
+          imagePullPolicy: IfNotPresent # 로컬에서 이미지를 먼저 가져온다. 없으면 레지스트리에서 가져온다.
+          ports:
+            - containerPort: 8080  # 컨테이너에서 사용하는 포트를 명시적으로 표현
+          env:
+            - name: MY_ACCOUNT
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-config # ConfigMap의 이름
+                  key: my-account # ConfigMap에 설정되어 있는 Key값
+            - name: MY_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-config
+                  key: my-password
+```
+
+3) 매니페스트 파일 반영하기
+
+```
+$ kubectl apply -f spring-config.yaml
+$ kubectl apply -f spring-deployment.yaml
+
+# kubectl rollout restart deployment [디플로이먼트명]
+$ kubectl rollout restart deployment spring-deployment # Deployment 재시작
+```
+
+시크릿(Secret)을 활용해 민감한 값을 환경 변수로 분리하기
+
+시크릿(Secret)은 컨피그맵(ConfigMap)과 비슷하게 환경 변수를 분리해서 관리하는 오브젝트이다.
+차이점은 시크릿(Secret)은 비밀번호와 같이 보안적으로 중요한 값을 관리하기 위한 오브젝트이다.
+
+1) 시크릿 매니페스트 파일 생성하기
+
+spring-secret.yaml
+```
+apiVersion: v1
+kind: Secret
+
+# Secret 기본 정보
+metadata:
+  name: spring-secret # Secret 이름
+
+# Key, Value 형식으로 값 저장
+stringData:
+  my-password: my-secret-password
+```
+
+2) deployment 매니페스트 파일 변경
+```
+apiVersion: apps/v1
+kind: Deployment
+
+# Deployment 기본 정보
+metadata:
+  name: spring-deployment # Deployment 이름
+
+# Deployment 세부 정보
+spec:
+  replicas: 5 # 생성할 파드의 복제본 개수
+  selector:
+    matchLabels:
+      app: backend-app # 아래에서 정의한 Pod 중 'app: backend-app'이라는 값을 가진 파드를 선택
+
+  # 배포할 Pod 정의
+  template:
+    metadata:
+      labels: # 레이블 (= 카테고리)
+        app: backend-app
+    spec:
+      containers:
+        - name: spring-container # 컨테이너 이름
+          image: spring-server # 컨테이너를 생성할 때 사용할 이미지
+          imagePullPolicy: IfNotPresent # 로컬에서 이미지를 먼저 가져온다. 없으면 레지스트리에서 가져온다.
+          ports:
+            - containerPort: 8080  # 컨테이너에서 사용하는 포트를 명시적으로 표현
+          env:
+            - name: MY_ACCOUNT
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-config # ConfigMap의 이름
+                  key: my-account # ConfigMap에 설정되어 있는 Key값
+            - name: MY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: spring-secret
+                  key: my-password
+```
+
+2) 매니페스트 파일 변경
+
+```
+$ kubectl apply -f spring-secret.yaml
+$ kubectl apply -f spring-config.yaml
+$ kubectl apply -f spring-deployment.yaml
+$ kubectl rollout restart deployment spring-deployment
+```

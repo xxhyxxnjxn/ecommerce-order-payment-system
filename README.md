@@ -527,3 +527,9 @@ $ kubectl apply -f spring-config.yaml
 $ kubectl apply -f spring-deployment.yaml
 $ kubectl rollout restart deployment spring-deployment
 ```
+
+볼륨 설정 issue
+1. mysql pod로 접속해서 mysql 동작하는지 확인했는데 secret에 적용한 비밀번호가 적용이 안된 이슈
+mysql -u root 로 그냥 비밀번호 없이 접속하니까 됨
+
+이유 : 

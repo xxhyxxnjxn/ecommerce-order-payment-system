@@ -5,11 +5,18 @@ metadata:
   name: mysql-service
 
 spec:
-  type: NodePort
+#  type: NodePort
+#  selector:
+#    app: mysql-deployment-db
+#  ports:
+#    - protocol: TCP
+#      nodePort: 30002
+#      port: 3306
+#      targetPort: 3306
+  type: ClusterIP
   selector:
     app: mysql-deployment-db
   ports:
     - protocol: TCP
-      nodePort: 30002
       port: 3306
       targetPort: 3306

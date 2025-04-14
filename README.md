@@ -532,4 +532,7 @@ $ kubectl rollout restart deployment spring-deployment
 1. mysql pod로 접속해서 mysql 동작하는지 확인했는데 secret에 적용한 비밀번호가 적용이 안된 이슈
 mysql -u root 로 그냥 비밀번호 없이 접속하니까 됨
 
-이유 : 
+이유 : secret을 실행하기 전 deployment로 실행하니까 비밀번호 없는 상태의 환경이 먼저 만들어짐 그 환경이 만들어지면
+rollout을 해도 그 비밀번호 관련 데이터는 덮어쓰기가 안된다고 함 그래서 secret이나 환경변수 관련 매니패스트 파일을 먼저 실행해주는게 낫다.
+
+### 2025-04-14

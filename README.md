@@ -542,3 +542,8 @@ Service 중에서도 NodePort를 사용하지 않고 ClusterIP를 사용한다.
 ClusterIP를 활용함으로써 외부에서 아무나 MySQL에 접근하지 못하게 막아야 한다.
 
 ClusterIP 란 ? 쿠버네티스 내부에서만 통신할 수 있는 IP 주소를 부여. 외부에서는 요청할 수 없다.
+
+1. ec2에 k3s 설치
+curl -sfL https://get.k3s.io | sh -
+
+sudo chmod 644 /etc/rancher/k3s/k3s.yaml

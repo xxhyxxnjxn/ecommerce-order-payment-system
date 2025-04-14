@@ -57,9 +57,9 @@ spring:
     activate:
       on-profile: aws
   datasource:
-    url: jdbc:mysql://mysql:3306/fastcamp_labs?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
-    username: fastcamp
-    password: testlabs
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   # JPA 설정
   jpa:
@@ -76,10 +76,10 @@ spring:
       batch-size: 100
   kafka:
     bootstrap-servers: [
-      "172.31.39.184:19094"
+      "172.31.39.184:30094"
     ]
     group-id: "settlements_1"
-    schema-registry-url: "http://172.31.39.184:8085"
+    schema-registry-url: "http://172.31.39.184:30085"
 
 pg:
   tosspayments:

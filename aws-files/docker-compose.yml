@@ -1,0 +1,43 @@
+services:
+  app:
+    image: xxhyxxnjxn/fast-ecommerce-aws:latest
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_PROFILES_ACTIVE: aws
+    depends_on:
+      - mysql
+    networks:
+      default_bridge:
+        ipv4_address: 172.26.0.10
+
+  mysql:
+    image: mysql:8.0.22
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      #호스트에 있는 디렉토리와 컨테이너에 있는 디렉토리를 연결 시켜주는 역할
+      #항상 왼쪽은 호스트 오른쪽은 도커 컨테이너
+      #docker-entrypoint-initdb.d 여기에 파일을 가져다 놓으면 실행될 때 알아서 실행되기 때문에 초기 스키마 생성이나 테이블 생성을 위한 파일을 여기에 가져다 놓음
+      - ./initdb:/docker-entrypoint-initdb.d
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+    command:
+      - '--default-authentication-plugin=mysql_native_password'
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_unicode_ci'
+      - '--lower_case_table_names=1'
+    environment:
+      MYSQL_DATABASE: service-labs
+      MYSQL_ROOT_PASSWORD: 1234
+    networks:
+      default_bridge:
+        ipv4_address: 172.26.0.14
+
+networks:
+  default_bridge:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.26.0.0/16

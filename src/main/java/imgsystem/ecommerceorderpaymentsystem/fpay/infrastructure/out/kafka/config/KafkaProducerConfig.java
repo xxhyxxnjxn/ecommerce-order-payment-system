@@ -24,6 +24,7 @@ import java.util.Map;
 @Setter
 public class KafkaProducerConfig {
     private String[] bootstrapServers;
+    private String schemaRegistryUrl;
 
     @Bean
      public ProducerFactory<String, Object> producerFactory() {
@@ -32,7 +33,7 @@ public class KafkaProducerConfig {
       config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, String.join(",", bootstrapServers));
       config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,  StringSerializer.class);
       config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
-      config.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8085");
+      config.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
 
      //config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
      // 여기에 StringSerializer 를 넣게 되면 send를 보낼 때 value값을 스트링으로만 보낼 수 있다. 객체를 보내게 되면 객체 -> String으로 변환? 시켜줘야함

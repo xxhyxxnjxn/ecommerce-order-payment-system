@@ -25,6 +25,7 @@ import java.util.Map;
 public class KafkaConsumerConfig {
     private String[] bootstrapServers;
     private String groupId;
+    private String schemaRegistryUrl;
 
     @Bean
     public ConsumerFactory<String, PaymentSettlements> consumerFactory() {
@@ -33,7 +34,7 @@ public class KafkaConsumerConfig {
         config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
-        config.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8085");
+        config.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
         config.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
         //true이면 컨슈머에서 제네링 avro 레코드(.avro 파일)에서 만들어진 avro 클래스를 사용한다. (예 : RPaymentSettlements)
         //false 이면 record 파일을 그대로 가져와서 사용함.
